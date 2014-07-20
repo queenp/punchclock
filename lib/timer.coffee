@@ -1,6 +1,6 @@
 ### IMPORTS ###
 # core
-fs = null #require "fs"
+fs = null
 path = require "path"
 
 # moment
@@ -13,8 +13,8 @@ twix = null
 mkdirp = null
 
 # timekeeper
-ClockView = null #require "./views/clock.coffee"
-StatusView = null #require "./views/status.coffee"
+ClockView = null
+StatusView = null
 
 ### EXPORTS ###
 module.exports =
@@ -58,10 +58,6 @@ module.exports =
 
             # Holder for all pauses/breaks
             @pauses = []
-
-            # Create the status bar views
-            # @clockView = new ClockView()
-            # @statusView = new StatusView()
 
         ### ACTIONS ###
         ### START ###
@@ -372,20 +368,6 @@ module.exports =
                                         new Buffer( @currentProject, "utf8" ).toString( "base64" )
             )
 
-            # # Check if project timekeeper path exists
-            # projectTimekeeperPathExists = fs.existsSync @projectTimekeeperPath
-            #
-            # # We don't seem to have it, lets try and create it
-            # if not projectTimekeeperPathExists
-            #     # Create the timekeeper directory
-            #     fs.mkdir @projectTimekeeperPath, ( createError ) =>
-            #         if createError
-            #             # The storage path didn't exist and we couldn't create it either
-            #             console.log "Project timekeeper folder '#{@projectTimekeeperPath}' could not be created - #{createError}"
-            #
-            #             # Error out
-            #             throw createError
-
         ### GET STORAGE PATH ###
         getStoragePath: ->
             # Return the current time data storage path
@@ -397,20 +379,6 @@ module.exports =
             if not @storagePath
                 # No path was provided, so let us build the default
                 @storagePath = "#{atom.getConfigDirPath()}/.timekeeper"
-
-            # # Check if storage path exists
-            # timekeeperPathExists = fs.existsSync @storagePath
-            #
-            # # We don't seem to have it, lets try and create it
-            # if not timekeeperPathExists
-            #     # Create the timekeeper directory
-            #     fs.mkdir @storagePath, ( createError ) =>
-            #         if createError
-            #             # The storage path didn't exist and we couldn't create it either
-            #             console.log "Timekeeper data storage folder '#{@storagePath}' could not be created - #{createError}"
-            #
-            #             # Error out
-            #             throw createError
 
         ### FORMATTING ###
         ### FORMAT ###
@@ -456,12 +424,13 @@ module.exports =
         ### STATUS BAR VIEWS ###
         renderStatusBarViews: ->
             ### REQUIRE ###
+            # timekeeper
             ClockView ?= require "./views/clock.coffee"
             StatusView ?= require "./views/status.coffee"
 
             # Create the status bar views
-            @clockView = new ClockView()
-            @statusView = new StatusView()
+            @clockView ?= new ClockView()
+            @statusView ?= new StatusView()
 
             # Attach the clock first
             @clockView.attach()
