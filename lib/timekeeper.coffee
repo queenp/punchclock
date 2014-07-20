@@ -12,11 +12,20 @@ module.exports =
 
     ### DEACTIVATE ###
     activate: ( state ) ->
-        # Setup the Timer object
-        @timer = new Timer( state )
+        # We only want to activate the package if there is a valid project
+        # Not handling atom being loaded without a project at this point - TODO
+        # Wrap the below in try catch since we throw an error from the constructor on
+        # no valid current project being opened. We still call the Timer since we want to
+        # handle any data save from a previous session
+        try
+            # Setup the Timer object
+            @timer = new Timer( state )
 
-        # Call initialize to setup commands & event handlers
-        @initialize()
+            # Call initialize to setup commands & event handlers
+            @initialize()
+        catch timerError
+            # Throw the error for the benefit of package manager activePackage
+            throw timerError
 
     ### INITIALIZE ###
     initialize: ->

@@ -37,9 +37,6 @@ module.exports =
             # Call the setStoragePath
             @setStoragePath()
 
-            # Call the setProjectTimekeeperPath
-            @setProjectTimekeeperPath()
-
             # Check if we have a state being passed through
             if state
                 # Check if we have any time tracking data from the previous state
@@ -47,17 +44,26 @@ module.exports =
                     # We have something from previous state, let us save it
                     @save( state.timerObject )
 
-            # Keep track of start, pause, & end timestamps (in milliseconds)
-            @startTimestamp = null
-            @pauseTimestamp = null
-            @endTimestamp = null
+            # We only want to activate the package if there is a valid project
+            # Not handling atom being loaded without a project at this point - TODO
+            if @currentProject
+                # Call the setProjectTimekeeperPath
+                @setProjectTimekeeperPath()
 
-            # Actual timer
-            @clock = 0
-            @break = 0
+                # Keep track of start, pause, & end timestamps (in milliseconds)
+                @startTimestamp = null
+                @pauseTimestamp = null
+                @endTimestamp = null
 
-            # Holder for all pauses/breaks
-            @pauses = []
+                # Actual timer
+                @clock = 0
+                @break = 0
+
+                # Holder for all pauses/breaks
+                @pauses = []
+            else
+                # Throw an error for the benefit of package manager activePackage
+                throw { stack: "- Timekeeper is active & functional only with a valid project open" }
 
         ### ACTIONS ###
         ### START ###
@@ -326,7 +332,7 @@ module.exports =
                                 @getStoragePath(),
                                 new Buffer( project, "utf8" ).toString( "base64" ),
                                 endDateObject.year().toString(),
-                                endDateObject.month().toString(),
+                                ( endDateObject.month() + 1 ).toString(),
                                 endDateObject.date().toString() + ".json"
                 )
 
@@ -343,7 +349,7 @@ module.exports =
                                     @getStoragePath(),
                                     new Buffer( project, "utf8" ).toString( "base64" ),
                                     dateInRange.year().toString(),
-                                    dateInRange.month().toString(),
+                                    ( dateInRange.month() + 1 ).toString(),
                                     dateInRange.date().toString() + ".json"
                     )
 
@@ -440,10 +446,10 @@ module.exports =
 
         ### CLEAR STATUS ###
         clearStatus: ->
+            # Remove the status clearer as well now
+            clearTimeout @statusClearer
+
             # Only clear the status if we are not in pause mode
             if @pauseTimestamp is null
                 # Clear the status
                 @statusView.clear()
-
-            # Remove the status clearer as well now
-            clearTimeout @statusClearer
