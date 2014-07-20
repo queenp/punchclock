@@ -153,13 +153,13 @@ module.exports =
 
         ### RESET ###
         reset: ->
+            # Clear the clock counter
+            clearTimeout @incrementer
+
             # Check if we are in pause
             if @pauseTimestamp isnt null
                 # Remove the paused class
                 @clockView.removeClass( "paused" )
-
-            # Clear the clock counter
-            clearTimeout @incrementer
 
             # Reset the clocks
             @resetClocks()
@@ -171,6 +171,11 @@ module.exports =
         abort: ->
             # Clear the clock incrementer
             clearTimeout @incrementer
+
+            # Check if we are in pause
+            if @pauseTimestamp isnt null
+                # Remove the paused class
+                @clockView.removeClass( "paused" )
 
             # Reset internal stuff
             @resetClocks()
