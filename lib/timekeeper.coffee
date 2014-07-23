@@ -37,9 +37,19 @@ module.exports =
         atom.workspaceView.command "timekeeper:abort", => @timer.abort()
 
         # Setup event handlers
+        # Render views
         $( window ).on "ready", =>
             # Attach the timer views
             @timer.renderStatusBarViews()
+
+        # Track focus to set auto-pauses
+        # Start/End autopause based on window focus
+        $( window ).on "blur", =>
+            # Just call the autopause method of the timer object
+            @timer.autopause()
+        $( window ).on "focus", =>
+            # Just call the autopause method of the timer object
+            @timer.autopause()
 
     ### DEACTIVATE ###
     deactivate: ->
@@ -64,6 +74,7 @@ module.exports =
                     "end": @timer.endTimestamp
                     "duration": @timer.clock
                     "pauses": @timer.pauses
+                    "autoPauses": @timer.autoPauses
                 }
             }
         else

@@ -25,6 +25,7 @@ module.exports =
         currentProject: null
         clockView: null
         statusView: null
+        isActive: false
 
         ### CONSTRUCTOR ###
         constructor: ( state, timeDataPath ) ->
@@ -55,12 +56,19 @@ module.exports =
                 @pauseTimestamp = null
                 @endTimestamp = null
 
+                # Keep track of auto-pause timestamps (in milliseconds)
+                @autoPauseStartTimestamp = null
+                @autoPauseEndTimestamp = null
+
                 # Actual timer
                 @clock = 0
                 @break = 0
 
-                # Holder for all pauses/breaks
+                # Holder for all pauses/breaks - manual only
                 @pauses = []
+
+                # Holder for all auto-pauses
+                @autoPauses = []
             else
                 # Throw an error for the benefit of package manager activePackage
                 throw { stack: "- Timekeeper is active & functional only with a valid project open" }
@@ -103,6 +111,29 @@ module.exports =
 
             # Clearer for the status message
             @statusClearer = setInterval ( => @clearStatus() ), 3000
+
+            # Set our active flag to true at this point, since we will be active tracking time
+            @isActive = true
+
+        ### AUTO-PAUSE ###
+        autopause: ->
+            # Do & track only auto-pause stuff if we are actively tracking
+            # time otherwise don't bother
+            if @isActive is true
+                # Check if we are already in auto-paused state, in which case auto-un-pause
+                if @autoPauseStartTimestamp isnt null
+                    # We were in auto-pause, so let us complete the auto-pause
+                    @autoPauseEndTimestamp = Date.now()
+
+                    # Add the auto-pause data to our holder
+                    @autoPauses.push { start: @autoPauseStartTimestamp, end: @autoPauseEndTimestamp }
+
+                    # Reset our auto-pause start & end timestamps
+                    @autoPauseStartTimestamp = null
+                    @autoPauseEndTimestamp = null
+                else
+                    # Set the auto-pause start at this point
+                    @autoPauseStartTimestamp = Date.now()
 
         ### PAUSE ###
         pause: ->
@@ -151,6 +182,9 @@ module.exports =
             # Update the clock now
             @clockView.update( @format() )
 
+            # Set our active flag to false at this point
+            @isActive = false
+
         ### RESET ###
         reset: ->
             # Clear the clock counter
@@ -189,6 +223,9 @@ module.exports =
             # Clearer for the status message
             @statusClearer = setInterval ( => @clearStatus() ), 3000
 
+            # Set our active flag to false at this point
+            @isActive = false
+
         ### INTERNAL ACTIONS ###
         ### STEP ###
         step: ->
@@ -210,12 +247,19 @@ module.exports =
             @pauseTimestamp = null
             @endTimestamp = null
 
+            # Reset auto-pause timestamps
+            @autoPauseStartTimestamp = null
+            @autoPauseEndTimestamp = null
+
             # Reset the actual clocks
             @clock = 0
             @break = 0
 
             # Reset the pauses data structure to empty list
             @pauses = []
+
+            # Reset the auto-pauses data structure to empty list
+            @autoPauses = []
 
         ### PERSIST ###
         ### SAVE ###
@@ -239,6 +283,7 @@ module.exports =
                 endValue = timerObject.end
                 clockValue = timerObject.duration
                 pausesValue = timerObject.pauses
+                autoPausesValue = timerObject.autoPauses
             else
                 # Set the project as the current project in this case
                 timerProject = @currentProject
@@ -248,6 +293,7 @@ module.exports =
                 endValue = @endTimestamp
                 clockValue = @clock
                 pausesValue = @pauses
+                autoPausesValue = @autoPauses
 
             # Create the time data to be stored
             dataToSave = {
@@ -255,6 +301,7 @@ module.exports =
                 "end": endValue
                 "duration": clockValue
                 "pauses": pausesValue
+                "autoPauses": autoPausesValue
             }
 
             # Get the file save paths where this data needs to be saved
