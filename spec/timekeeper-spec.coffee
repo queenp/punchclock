@@ -27,6 +27,23 @@ describe "Timekeeper", ->
         # Setup the activation for the package
         activationPromise = atom.packages.activatePackage( "timekeeper" )
 
+        # Setup the current datetime object
+        currentDate = new Date()
+
+        # Setup the file path that will save time data for this spec run
+        saveFilePath = path.join(
+                            "#{atom.getConfigDirPath()}/.timekeeper",
+                            new Buffer( atom.project.getPath(), "utf8" ).toString( "base64" ),
+                            currentDate.getFullYear().toString(),
+                            ( currentDate.getMonth() + 1 ).toString(),
+                            currentDate.getDate() + ".json"
+                        )
+
+        # Check if we have a file from any previous runs, if yes, let us remove it
+        if fs.existsSync( saveFilePath )
+            # Remove the file, we don't want old data
+            fs.unlinkSync( saveFilePath )
+
         # Create the notepads object
         @timer = new Timer()
 
@@ -350,7 +367,7 @@ describe "Timekeeper", ->
     describe "Timekeeper Abort", ->
         ### TEST ###
         # Test timerkeeper abort & resets everything on calling abort()
-        it "resets all data on calling reset() & is not actively tracking time", ->
+        it "discards all time tracking data on calling abort() & stops tracking time", ->
             # Wait for package to be activated and functional
             waitsForPromise =>
                 # Waits for the activation
@@ -364,18 +381,18 @@ describe "Timekeeper", ->
                     @timer.start()
 
                 # Wait for the time to pass
-                waits( 5000 )
+                waits( 4000 )
 
                 # Verify that time tracking is running
                 runs =>
                     # Start timestamp and click should not be defaults
                     expect( @timer.startTimestamp ).not.toBeNull()
-                    expect( @timer.clock ).toBeGreaterThan( 3 )
+                    expect( @timer.clock ).toBeGreaterThan( 2 )
 
                     # Now let us issue an abort
-                    waitsFor =>
-                        # Call timer abort
-                        @timer.abort()
+                    #waitsFor =>
+                    # Call timer abort
+                    @timer.abort()
 
                     # We have effectively stopped time tracking so nothing should be going on now
                     runs =>
@@ -386,11 +403,11 @@ describe "Timekeeper", ->
                         # Timer clock view should also be back to default
                         expect( atom.workspaceView.find( "#clock" ).html() ).toEqual( "00:00:00" )
 
-    ### TIMEKEEPER STOP ###
-    describe "Timekeeper Stop", ->
+    ### TIMEKEEPER FINISH ###
+    describe "Timekeeper Finish", ->
         ### TEST ###
         # Test timerkeeper saves time tracking data on calling start
-        it "saves tracked time data on calling stop()", ->
+        it "saves tracked time data on calling finish()", ->
             # Wait for package to be activated and functional
             waitsForPromise =>
                 # Waits for the activation
@@ -404,7 +421,7 @@ describe "Timekeeper", ->
                     @timer.start()
 
                 # Wait for the time to pass
-                waits( 5000 )
+                waits( 1000 )
 
                 # Verify that time tracking is running
                 runs =>
@@ -412,12 +429,9 @@ describe "Timekeeper", ->
                     @timer.previousStartTimestamp = @timer.startTimestamp
 
                     # Now let us finish up
-                    waitsFor =>
-                        # Call timer finish
-                        @timer.finish()
-
-                    # Wait a bit for it process all the data
-                    waits( 2000 )
+                    #waitsFor =>
+                    # Call timer finish
+                    @timer.finish()
 
                     # We have effectively stopped time tracking so nothing should be going on now
                     runs =>
