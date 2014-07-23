@@ -51,6 +51,7 @@ Reposting, external services integration & other features are currently in devel
 - [x] Displays timer in the status bar with the time being tracked, with occasional status messages
 - [x] Saves tracked time data (to be used with features currently under development)
 - [x] Automatically handle saving of time tracking data from previous session, even if the `Finish` command was not issued manually before exiting from Atom
+- [x] Tracks when Atom is out of focus and collects that data, so that it can be factored in for better reporting
 
 ## Commands
 

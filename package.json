@@ -1,7 +1,7 @@
 {
     "name": "timekeeper",
     "prouctName": "timekeeper",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Timekeeper handles all of your time tracking needs from within Atom.",
     "keywords": [
         "timekeeper",
