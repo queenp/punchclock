@@ -9,10 +9,12 @@ module.exports =
         ### CONTENT ###
         @content: ->
             # Setup the container
-            @div class: 'timekeeper timer inline-block', =>
-                # Timer
-                @span class: "icon icon-clock"
-                @span outlet: "clock", id: "clock", "00:00:00"
+            @div class: 'timekeeper inline-block', =>
+                # Inner Container
+                @div class: "timer", =>
+                    # Timer
+                    @span class: "icon icon-clock"
+                    @span outlet: "clock", id: "clock", "00:00:00"
 
         ### INITIALIZE ###
         initialize: ->

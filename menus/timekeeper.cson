@@ -10,6 +10,7 @@
     'submenu': [
         'label': 'Timekeeper'
         'submenu': [
+            { 'label': 'Dashboard', 'command': 'timekeeper:dashboard' }
             { 'label': 'Start Timekeeper', 'command': 'timekeeper:start' },
             { 'label': 'Pause Timekeeper', 'command': 'timekeeper:pause' },
             { 'label': 'Finish Timekeeper', 'command': 'timekeeper:finish' },
