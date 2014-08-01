@@ -55,42 +55,6 @@ describe "Timekeeper", ->
         # Reset everything after each test
         @timer.resetClocks()
 
-    ### TIMEKEEPER CLOCK ###
-    describe "Status Bar Timekeeper Clock", ->
-        ### TEST ###
-        # On loading, we should have a timekeeper clock in the status bar
-        it "renders a clock in the status bar on load", ->
-            # Wait for package to be activated and functional
-            waitsForPromise =>
-                # Waits for the activation
-                activationPromise
-
-            # Verify that there is one new editor that opened the notepad
-            runs =>
-                # We should have the timer container element somewhere in the workspace view
-                expect( atom.workspaceView.find( ".timekeeper.timer" ) ).toExist()
-
-                # Timer view should have been rendered with 0 on the clock
-                expect( atom.workspaceView.find( "#clock" ).html() ).toEqual( "00:00:00" )
-
-    ### TIMEKEEPER STATUS ###
-    describe "Status Bar Timekeeper Status", ->
-        ### TEST ###
-        # On loading, we should have a timekeeper status in the status bar
-        it "renders a status in the status bar on load", ->
-            # Wait for package to be activated and functional
-            waitsForPromise =>
-                # Waits for the activation
-                activationPromise
-
-            # Verify that there is one new editor that opened the notepad
-            runs =>
-                # We should have the timer container element somewhere in the workspace view
-                expect( atom.workspaceView.find( ".timekeeper.timer" ) ).toExist()
-
-                # Timer view should have been rendered with nothing in status
-                expect( atom.workspaceView.find( "#status" ).html() ).toEqual( "" )
-
     ### TIMEKEEPER DEFAULTS ###
     describe "Timekeeper Load Defaults", ->
         ### TEST ###

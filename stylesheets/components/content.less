@@ -4,7 +4,45 @@
 // for a full listing of what's available.
 @import "ui-variables";
 
-// Content
+/** GENERAL **/
 .content {
-    padding: 20px 0px 20px 0px;
+    // Blocks
+    .wrapper > div {
+        margin-bottom: 30px;
+    }
+
+    // Block Headers
+    .wrapper .header h4 {
+        color: #6D6D6D;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    // Collection Items
+    .wrapper .collection > .item {
+        margin-bottom: 10px;
+        padding: 5px 5px 5px 5px;
+    }
+
+    // Item - Title
+    .collection > .item > .title {
+        color: #2AADDF;
+        font-size: 16px;
+        margin: 0px 0px 0px 0px;
+    }
+
+    // Item - Sub-title
+    .collection > .item > .subtitle {
+        font-size: 12px;
+        font-style: italic;
+    }
+}
+
+/** DASHBOARD **/
+#dashboard {
+    // Project
+    .project:hover {
+        background-color: #F0F2F2;
+        cursor: pointer;
+    }
 }

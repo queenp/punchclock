@@ -3,15 +3,16 @@
 {$, ScrollView} = require 'atom'
 
 # timekeeper
-ColorUtils = require "../utilities/colors.coffee"
 HeaderView = require "./header.coffee"
-NavigationView = require "./navigation.coffee"
-FooterView = require "./footer.coffee"
 DashboardView = require "./dashboard.coffee"
 
 ### EXPORTS ###
 module.exports =
     class TimekeeperView extends ScrollView
+        ### ATTRIBUTES ###
+        page: null
+        controller: null
+
         ### CONTENT ###
         @content: ->
             # Setup the pane wrapper
@@ -22,30 +23,35 @@ module.exports =
                     @subview outlet: "header", new HeaderView()
 
                     # Content
-                    @div class: "content", =>
-                        # Navigation
-                        #@subview outlet: "navigation", new NavigationView()
-
-                        # Content
-                        @subview outlet: "content", new DashboardView()
+                    @div outlet: "content", class: "content"
 
         ### CONSTRUCTOR ###
         constructor: ( { @page } ) ->
-            # Call the super
-            super
-
             # Check if we have a valid requested page
             if @page?
                 # Get the uri path without the forward slash
-                controller = @page.substring( 1 ).split( "/" )[0]
+                @controller = @page.substring( 1 ).split( "/" )[0]
 
-                # Strip the forward slash at the page uri
+            # Call the super
+            super
 
-        ### SERIALIZE ###
-        serialize: ->
+        ### INITIALIZE ###
+        initialize: ->
+            # Let us check what kind of view we want to generate
+            if @controller?
+                # We have a valid controller, so let us create the view
+                # based off that
+                switch @controller
+                    # Handle Dashboard
+                    when "dashboard"
+                        # Create the dashboard view
+                        viewToDisplay = new DashboardView()
+                    else
+                        # Default to Dashboard if we cannot handle the page requested
+                        viewToDisplay = new DashboardView()
 
-        ### DESTROY ###
-        destroy: ->
+                # Now render the view in the main view
+                @content.append( viewToDisplay )
 
         ### INTERNAL METHODS ###
         ### GET TITLE ###

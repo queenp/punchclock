@@ -14,14 +14,9 @@ module.exports =
         ### CONTENT ###
         @content: ->
             # Setup the container
-            @div class: "content", =>
+            @div id: "dashboard", class: "wrapper", =>
                 # Message
                 @div outlet: "message", class: "message", ""
-
-                # Summary
-                @div class: "summary", =>
-                    # List
-                    @ul outlet: "summaryProjectsList"
 
         ### CONSTRUCTOR ###
         constructor: ->
@@ -29,7 +24,7 @@ module.exports =
             @reporter = new Reporter()
 
             # Call the super
-            super()
+            super
 
         ### INITIALIZE ###
         initialize: ->
@@ -46,22 +41,47 @@ module.exports =
 
             # Add the available projects to the summary list
             if currentProjects.length > 0
-                # Loop through the current projects
-                for currentProject in currentProjects
-                    # Create a new list element for the project
-                    projectElement = $( "<li></li>", { class: "project" } )
+                # Display Recent Projects
+                @recentProjects( currentProjects )
 
-                    # Create the elements for the data pieces
-                    projectLabel = $( "<span>#{currentProject.label}<br />#{currentProject.path}</span>" )
+        ### BLOCKS ###
+        ### RECENT PROJECTS ###
+        recentProjects: ( currentProjects ) ->
+            # We have some project so create the recent project container
+            recentProjectsContainer = $( "<div></div>", { class: "recent-projects" } )
 
-                    # Append the data we need
-                    projectElement.append( projectLabel )
+            # Setup the header
+            recentProjectsHeader = $( "<div></div>", { class: "header" } )
+            headerTitle = $( "<h4>Recent Projects</h4>" )
 
-                    # Add to the summary projects list
-                    @summaryProjectsList.append( projectElement )
+            # Append the header to the container
+            recentProjectsHeader.append( headerTitle )
+            recentProjectsContainer.append( recentProjectsHeader )
 
-        ### SERIALIZE ###
-        serialize: ->
+            # Create the collection container
+            recentProjectsList = $( "<div></div>", { class: "collection" } )
 
-        ### DESTROY ###
-        destroy: ->
+            # Loop through the current projects
+            for currentProject in currentProjects
+                # Create a new list element for the project
+                projectElement = $( "<div></div>", { class: "item project" } )
+
+                # Create the elements for the data pieces
+                # Label
+                projectLabel = $( "<h6></h6>", { class: "title", text: currentProject.label } )
+
+                # Path
+                projectPath = $( "<span></span>", { class: "subtitle", text: currentProject.path } )
+
+                # Append the data we need
+                projectElement.append( projectLabel )
+                projectElement.append( projectPath )
+
+                # Add to the summary projects list
+                recentProjectsList.append( projectElement )
+
+            # Append the collection to the container
+            recentProjectsContainer.append( recentProjectsList )
+
+            # Append to the dashboard
+            this.append( recentProjectsContainer )

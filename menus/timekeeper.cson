@@ -10,12 +10,18 @@
     'submenu': [
         'label': 'Timekeeper'
         'submenu': [
-            { 'label': 'Dashboard', 'command': 'timekeeper:dashboard' }
+            # Timekeeper Timer Actions
             { 'label': 'Start Timekeeper', 'command': 'timekeeper:start' },
             { 'label': 'Pause Timekeeper', 'command': 'timekeeper:pause' },
             { 'label': 'Finish Timekeeper', 'command': 'timekeeper:finish' },
             { 'label': 'Reset Timekeeper', 'command': 'timekeeper:reset' },
-            { 'label': 'Abort Timekeeper', 'command': 'timekeeper:abort' }
+            { 'label': 'Abort Timekeeper', 'command': 'timekeeper:abort' },
+
+            # Separator
+            { type: 'separator' },
+
+            # Timekeeper UI Actions
+            { 'label': 'Dashboard', 'command': 'timekeeper:dashboard' }
         ]
     ]
 } ]

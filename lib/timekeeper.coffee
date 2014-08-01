@@ -52,20 +52,21 @@ module.exports =
         # Setup views & related commands
         atom.workspaceView.command "timekeeper:dashboard", => @dashboard()
 
-        # Setup event handlers
-        # Render views
-        $( window ).on "ready", =>
-            # Attach the timer views
-            @timer.renderStatusBarViews()
+        # Setup event handlers - only if we are not in spec mode
+        if atom.mode isnt "spec"
+            # Render views
+            $( window ).on "ready", =>
+                # Attach the timer views
+                @timer.renderStatusBarViews()
 
-        # Track focus to set auto-pauses
-        # Start/End autopause based on window focus
-        $( window ).on "blur", =>
-            # Just call the autopause method of the timer object
-            @timer.autopause()
-        $( window ).on "focus", =>
-            # Just call the autopause method of the timer object
-            @timer.autopause()
+            # Track focus to set auto-pauses
+            # Start/End autopause based on window focus
+            $( window ).on "blur", =>
+                # Just call the autopause method of the timer object
+                @timer.autopause()
+            $( window ).on "focus", =>
+                # Just call the autopause method of the timer object
+                @timer.autopause()
 
         # Watch for theme changes/reloads to reload our view
         atom.themes.on "reloaded", =>
@@ -111,11 +112,13 @@ module.exports =
         # Destroy the timekeeper object at this point
         @timer = null
 
-        # Reset the view & destroy it
-        @timekeeperView.destroy()
+        # Only destroy if we ever created it
+        if @timekeeperView?
+            # Reset the view & destroy it
+            @timekeeperView.detach()
 
-        # Reset view
-        @timekeeperView = null
+            # Reset view
+            @timekeeperView = null
 
     ### SERIALIZE ###
     serialize: ->

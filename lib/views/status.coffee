@@ -13,7 +13,7 @@ module.exports =
                 # Inner Container
                 @div class: "timer", =>
                     # Status
-                    @span outlet: "status", id: "status", "Timekeeper status message text"
+                    @span outlet: "status", id: "status"
 
         ### INITIALIZE ###
         initialize: ->
