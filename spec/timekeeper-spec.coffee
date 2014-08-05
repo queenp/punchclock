@@ -79,6 +79,43 @@ describe "Timekeeper", ->
                 # Pauses data should be empty
                 expect( @timer.pauses.length ).toEqual( 0 )
 
+    ### TIMEKEEPER AUTO-START ###
+    describe "Timekeeper Auto-Start", ->
+        ### TEST ###
+        # Test that timerkeeper starts tracking time automatically on load if enabled in settings
+        it "starts tracking time on load if autoEnableTimeTrackigOnLoad is turned on", ->
+            # Wait for package to be activated and functional
+            waitsForPromise =>
+                # Waits for the activation
+                activationPromise
+
+            # Verify that timekeeper tracks time on issuing start
+            runs =>
+                # Start & Clock should be default
+                expect( @timer.startTimestamp ).toBeNull()
+                expect( @timer.clock ).toEqual( 0 )
+
+                # By default timekeeper sets the autoEnable configuration to false, so we have
+                # to override it here and set it to true before we test it
+                @timer.autoEnable = true
+
+                # Issue the start command to timekeeper
+                waitsFor =>
+                    # Call timer autostart
+                    @timer.autostart()
+
+                # Wait for a little bit of time to pass and then verify it started
+                waits( 1000 )
+
+                # Verify the time tracking
+                runs =>
+                    # Start & Clock should have increased
+                    expect( @timer.startTimestamp ).not.toBeNull()
+                    expect( @timer.clock ).toBeGreaterThan( 0 )
+
+                    # Timer clock view should not be zero anymore
+                    expect( atom.workspaceView.find( "#clock" ).html() ).not.toEqual( "00:00:00" )
+
     ### TIMEKEEPER START ###
     describe "Timekeeper Start", ->
         ### TEST ###

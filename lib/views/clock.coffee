@@ -16,12 +16,6 @@ module.exports =
                     @span class: "icon icon-clock"
                     @span outlet: "clock", id: "clock", "00:00:00"
 
-        ### INITIALIZE ###
-        initialize: ->
-
-        ### SERIALIZE ###
-        serialize: ->
-
         ### ATTACH ###
         attach: ->
             # Check if we have the status bar

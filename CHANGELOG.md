@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.0
+
+Configurable setting to auto enable time tracking on all projects on load (defaults to false/disabled, enable it in the package settings to activate it)
+
 ### v0.3.0
 
 Mostly UI related changes in the release, listed below:

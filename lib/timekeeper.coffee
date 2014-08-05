@@ -19,6 +19,11 @@ createTimekeeperView = ( state ) ->
 
 ### EXPORTS ###
 module.exports =
+    ### CONFIGURATION ###
+    configDefaults:
+        # Auto Enable Time Tracking - default to false, leave up to user to turn it on if desired
+        autoEnableTimeTrackingOnLoad: false
+
     ### ATTRIBUTES ###
     timer: null
     timekeeperView: null
@@ -58,6 +63,9 @@ module.exports =
             $( window ).on "ready", =>
                 # Attach the timer views
                 @timer.renderStatusBarViews()
+
+                # Call autostart to check if we want to autostart time tracking
+                @timer.autostart()
 
             # Track focus to set auto-pauses
             # Start/End autopause based on window focus

@@ -69,11 +69,22 @@ module.exports =
 
                 # Holder for all auto-pauses
                 @autoPauses = []
+
+                # Setup auto enable time tracking configuration
+                @autoEnable = atom.config.get( "timekeeper.autoEnableTimeTrackingOnLoad" )
             else
                 # Throw an error for the benefit of package manager activePackage
                 throw { stack: "- Timekeeper is active & functional only with a valid project open" }
 
         ### ACTIONS ###
+        ### AUTO-START ###
+        autostart: ->
+            # Let us check if we want to autostart time tracking
+            if @autoEnable is true
+                # We seem to have auto-enable time tracking turned on, so let us start
+                # Just call the start & let it handle stuff as usual
+                @start()
+
         ### START ###
         start: ->
             # Check if we are coming out of a pause
@@ -112,7 +123,7 @@ module.exports =
             # Clearer for the status message
             @statusClearer = setInterval ( => @clearStatus() ), 3000
 
-            # Set our active flag to true at this point, since we will be active tracking time
+            # Set our active flag to true at this point, since we will be actively tracking time
             @isActive = true
 
         ### AUTO-PAUSE ###

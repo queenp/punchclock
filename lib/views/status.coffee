@@ -15,12 +15,6 @@ module.exports =
                     # Status
                     @span outlet: "status", id: "status"
 
-        ### INITIALIZE ###
-        initialize: ->
-
-        ### SERIALIZE ###
-        serialize: ->
-
         ### ATTACH ###
         attach: ->
             # Check if we have the status bar

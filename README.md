@@ -14,7 +14,7 @@ Timekeeper allows you to track time spent on projects, and provides (or rather w
 
 ![Timekeeper Paused](https://github.com/skulled/timekeeper/raw/master/docs/assets/images/timekeeper-status-bar-view-paused.png)
 
-As of `v0.1.0`, it can only save the time tracking data but does not provide any convenient ways of viewing or exporting this data yet. This data will subsequently be used for viewing/generating reports as and when those features are available.
+As of `v0.3.0`, it provides a preliminary dashboard to view time tracking data, which is very incomplete and pretty useless. Further reporting & dashboard functionality coming soon!!
 
 > _Although every effort is made to keep things as stable as possible, please do note that the package is under constant development so there might be occasional bugs. If you run across any issues, please [add an issue](https://github.com/skulled/timekeeper/issues/new) with the details._
 
@@ -44,6 +44,7 @@ Reposting, external services integration & other features are currently in devel
 - [x] Saves tracked time data (to be used with features currently under development)
 - [x] Automatically handle saving of time tracking data from previous session, even if the `Finish` command was not issued manually before exiting from Atom
 - [x] Tracks when Atom is out of focus and collects that data, so that it can be factored in for better reporting
+- [x] Configuration setting to auto enable time tracking on all projects on load (Per-project configuration coming soon!!). **Defaults to FALSE/DISABLED**, enable it in your settings to activate the feature
 - [x] Preliminary & basic Dashboard UI available now (not very useful, but it is a start :smile:)
 
 ## Commands
