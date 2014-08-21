@@ -4,13 +4,15 @@
 
 # timekeeper
 HeaderView = require "./header.coffee"
-DashboardView = require "./dashboard.coffee"
+DashboardView = null # Defer until required
+ProjectSettingsView = null # Defer until required
 
 ### EXPORTS ###
 module.exports =
     class TimekeeperView extends ScrollView
         ### ATTRIBUTES ###
         page: null
+        id: null
         controller: null
 
         ### CONTENT ###
@@ -26,7 +28,7 @@ module.exports =
                     @div outlet: "content", class: "content"
 
         ### CONSTRUCTOR ###
-        constructor: ( { @page } ) ->
+        constructor: ( { @page, @id } ) ->
             # Check if we have a valid requested page
             if @page?
                 # Get the uri path without the forward slash
@@ -37,21 +39,39 @@ module.exports =
 
         ### INITIALIZE ###
         initialize: ->
-            # Let us check what kind of view we want to generate
-            if @controller?
-                # We have a valid controller, so let us create the view
-                # based off that
-                switch @controller
-                    # Handle Dashboard
-                    when "dashboard"
-                        # Create the dashboard view
-                        viewToDisplay = new DashboardView()
-                    else
-                        # Default to Dashboard if we cannot handle the page requested
-                        viewToDisplay = new DashboardView()
+            # Get the view we want to display
+            displayView = @getView()
+
+            # Make sure we have a valid view to display
+            if displayView?
+                # Discard the current view being displayed
+                @content.empty()
 
                 # Now render the view in the main view
-                @content.append( viewToDisplay )
+                @content.append( displayView )
+
+            # Call the super
+            super
+
+        ### NAVIGATE ###
+        navigate: ( path ) ->
+            # Get the view we want to display
+            displayView = @getView()
+
+            # Make sure we have a valid view to display
+            if displayView?
+                # Discard the current view being displayed
+                @content.empty()
+
+                # Now render the view in the main view
+                @content.append( displayView )
+
+        ### SET PAGE ###
+        setPage: ( { @page, @id } ) ->
+            # Check if we have a valid requested page
+            if @page?
+                # Get the uri path without the forward slash
+                @controller = @page.substring( 1 ).split( "/" )[0]
 
         ### INTERNAL METHODS ###
         ### GET TITLE ###
@@ -67,5 +87,44 @@ module.exports =
 
         ### GET URI ###
         getUri: ->
-            # Return the uri for the view
-            return @uri
+            # Check if we have a valid id to put in the uri
+            if @id?
+                # Return the uri with the id
+                return "timekeeper://ui#{@page}#{@id}"
+            else
+                # Return the uri for the view
+                return "timekeeper://ui#{@page}"
+
+        ### GET VIEW ###
+        getView: ->
+            # Setup the default view to display
+            viewToDisplay = null
+
+            # Let us check what kind of view we want to generate
+            if @controller?
+                # We have a valid controller, so let us create the view
+                # based off that
+                switch @controller
+                    # Handle Dashboard
+                    when "dashboard"
+                        ### REQUIRES ###
+                        DashboardView ?= require "./dashboard.coffee"
+
+                        # Create the dashboard view
+                        viewToDisplay = new DashboardView()
+                    # Handle Project Settings
+                    when "project-settings"
+                        ### REQUIRES ###
+                        ProjectSettingsView ?= require "./project-settings.coffee"
+
+                        # Create the Project Settings view
+                        viewToDisplay = new ProjectSettingsView()
+                    else
+                        ### REQUIRES ###
+                        DashboardView ?= require "./dashboard.coffee"
+
+                        # Default to Dashboard if we cannot handle the page requested
+                        viewToDisplay = new DashboardView()
+
+            # Return the view
+            return viewToDisplay

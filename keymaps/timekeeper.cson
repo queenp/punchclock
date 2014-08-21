@@ -17,3 +17,4 @@
 
     # Timekeeper UI Actions
     'ctrl-alt-d': 'timekeeper:dashboard'
+    'ctrl-alt-c': 'timekeeper:project-settings'

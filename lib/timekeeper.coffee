@@ -17,6 +17,13 @@ createTimekeeperView = ( state ) ->
     # Check if we have a view already
     return new TimekeeperView( state )
 
+isTimekeeperView = ( object ) ->
+    ### REQUIRES ###
+    TimekeeperView ?= require "./views/index.coffee"
+
+    # Return back boolean to indicate if given object is a timekeeper view
+    return object instanceof TimekeeperView
+
 ### EXPORTS ###
 module.exports =
     ### CONFIGURATION ###
@@ -55,7 +62,8 @@ module.exports =
         atom.workspaceView.command "timekeeper:abort", => @timer.abort()
 
         # Setup views & related commands
-        atom.workspaceView.command "timekeeper:dashboard", => @dashboard()
+        atom.workspaceView.command "timekeeper:dashboard", => @ui( "dashboard" )
+        atom.workspaceView.command "timekeeper:project-settings", => @ui( "project-settings/#" + new Buffer( @timer.currentProject, "utf8" ).toString( "base64" ) )
 
         # Setup event handlers - only if we are not in spec mode
         if atom.mode isnt "spec"
@@ -86,7 +94,7 @@ module.exports =
             # See if we can use the uri provided
             try
                 # Split up the uri in to parts
-                {protocol, host, pathname} = url.parse( uriToOpen )
+                {protocol, host, pathname, hash} = url.parse( uriToOpen )
             catch error
                 # There seems to have been an error, just quietly return
                 return
@@ -103,14 +111,18 @@ module.exports =
                 return
 
             # Check if we have the path in our list
-            if pathname not in [ "/dashboard" ]
+            if pathname.replace( /\//g, "" ) not in [ "dashboard", "project", "project-settings" ]
                 # We do not recognize the timekeeper path, return
                 return
 
             # Check if we have a timekeeper view we can use
             if @timekeeperView is null
                 # Get the timekeeper view now
-                @timekeeperView = createTimekeeperView( page: pathname )
+                @timekeeperView = createTimekeeperView( page: pathname, id: hash )
+            else
+                # We might have a different ui page requested so override the previous one
+                @timekeeperView.setPage( page: pathname, id: hash )
+                @timekeeperView.navigate()
 
             # Return the view
             return @timekeeperView
@@ -153,7 +165,33 @@ module.exports =
             # Doesn't look like we need to restore any data, so return null
             return { "timerObject": null }
 
-    ### DASHBOARD ###
-    dashboard: ->
+    ### UI ###
+    ui: ( page ) ->
+        # Check if active pane item is a timekeeper view
+        if isTimekeeperView( atom.workspace.activePaneItem )
+            # Setup the current timekeeper view page uri
+            currentPageUri = atom.workspace.activePaneItem.getUri()
+            
+            # Check if the ui page requested and current one being displayed are
+            # the same, in which case close the view altogether 'toggle' function
+            if currentPageUri.split( "/" )[3] is page.split( "/" )[0]
+                # The current active pane item is a timekeeper view on the same requested page
+                # Close out the view altogether
+                atom.workspace.destroyActivePaneItem()
+
+                # Get out at this point
+                return
+
+        # Check if we have the timekeeper view open in any pane
+        timekeeperViewPane = atom.workspace.paneForUri( "timekeeper://ui/#{page}" )
+
+        # Check if we got a valid pane
+        if timekeeperViewPane?
+            # We have timekeeper view open, let us close out
+            timekeeperViewPane.destroyItem( timekeeperViewPane.itemForUri( "timekeeper://ui/#{page}" ) )
+
+            # Get out at this point
+            return
+
         # Open up the dashboard
-        atom.workspace.open( "timekeeper://ui/dashboard", split: 'right', searchAllPanes: true )
+        atom.workspace.open( "timekeeper://ui/#{page}", split: 'right', searchAllPanes: true )

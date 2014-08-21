@@ -21,7 +21,8 @@
             { type: 'separator' },
 
             # Timekeeper UI Actions
-            { 'label': 'Dashboard', 'command': 'timekeeper:dashboard' }
+            { 'label': 'Dashboard', 'command': 'timekeeper:dashboard' },
+            { 'label': 'Project Settings', 'command': 'timekeeper:project-settings' }
         ]
     ]
 } ]
