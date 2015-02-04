@@ -3,7 +3,7 @@
 url = require "url"
 
 # atom
-{$} = require "atom"
+{$} = require 'atom'
 
 # timerkeeper
 Timer = require "./timer.coffee"
@@ -77,7 +77,7 @@ module.exports =
                 @timer.autopause()
 
         # Watch for theme changes/reloads to reload our view
-        atom.themes.on "reloaded", =>
+        atom.themes.onDidChangeActiveThemes =>
             # Reset the view
             @timekeeperView = null
 
