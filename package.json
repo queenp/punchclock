@@ -28,7 +28,8 @@
     "dependencies": {
         "moment": "*",
         "twix": "*",
-        "mkdirp": "*"
+        "mkdirp": "*",
+        "atom-space-pen-views": "^2.0.3"
     },
     "devDependencies": {
     },
