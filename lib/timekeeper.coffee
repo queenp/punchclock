@@ -48,14 +48,14 @@ module.exports =
     ### INITIALIZE ###
     initialize: ( state ) ->
         # Setup the commands
-        atom.workspaceView.command "timekeeper:start", => @timer.start()
-        atom.workspaceView.command "timekeeper:pause", => @timer.pause()
-        atom.workspaceView.command "timekeeper:finish", => @timer.finish()
-        atom.workspaceView.command "timekeeper:reset", => @timer.reset()
-        atom.workspaceView.command "timekeeper:abort", => @timer.abort()
+        atom.commands.add 'atom-workspace', "timekeeper:start", => @timer.start()
+        atom.commands.add 'atom-workspace', "timekeeper:pause", => @timer.pause()
+        atom.commands.add 'atom-workspace', "timekeeper:finish", => @timer.finish()
+        atom.commands.add 'atom-workspace', "timekeeper:reset", => @timer.reset()
+        atom.commands.add 'atom-workspace', "timekeeper:abort", => @timer.abort()
 
         # Setup views & related commands
-        atom.workspaceView.command "timekeeper:dashboard", => @dashboard()
+        atom.commands.add 'atom-workspace', "timekeeper:dashboard", => @dashboard()
 
         # Setup event handlers - only if we are not in spec mode
         if atom.mode isnt "spec"
