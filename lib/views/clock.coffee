@@ -22,6 +22,8 @@ module.exports =
             statusBar = document.querySelector("status-bar")
             if statusBar?
               @statusBarTile = statusBar.addRightTile(item: this, priority: 100)
+            else
+              atom.workspace.addModalPanel(item:this.element, visible: true)
 
         ### DESTROY ###
         destroy: ->
