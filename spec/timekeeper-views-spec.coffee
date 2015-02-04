@@ -109,7 +109,7 @@ describe "Timekeeper Views", ->
                 # Trigger and wait for the timekeeper view to be rendered
                 waitsFor =>
                     # Open the timekeeper dashboard now
-                    atom.commands.dispatch 'atom-workspace', "timekeeper:dashboard"
+                    atom.commands.dispatch workspaceElement, "timekeeper:dashboard"
 
                 # Wait a bit for the view to be rendered
                 waits( 2000 )

@@ -34,7 +34,7 @@ describe "Timekeeper", ->
         # Setup the file path that will save time data for this spec run
         saveFilePath = path.join(
                             "#{atom.getConfigDirPath()}/.timekeeper",
-                            new Buffer( atom.project.getPath(), "utf8" ).toString( "base64" ),
+                            new Buffer( atom.project.getPaths(), "utf8" ).toString( "base64" ),
                             currentDate.getFullYear().toString(),
                             ( currentDate.getMonth() + 1 ).toString(),
                             currentDate.getDate() + ".json"
