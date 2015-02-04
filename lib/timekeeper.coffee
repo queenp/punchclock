@@ -82,7 +82,7 @@ module.exports =
             @timekeeperView = null
 
         # Register the opener for timekeeper
-        atom.workspace.registerOpener ( uriToOpen ) =>
+        atom.workspace.addOpener ( uriToOpen ) =>
             # See if we can use the uri provided
             try
                 # Split up the uri in to parts
