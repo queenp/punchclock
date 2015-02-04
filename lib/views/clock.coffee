@@ -1,5 +1,5 @@
 ### IMPORTS ###
-{View} = require 'atom'
+{View} = require 'atom-space-pen-views'
 
 ### EXPORTS ###
 module.exports =
@@ -19,13 +19,9 @@ module.exports =
         ### ATTACH ###
         attach: ->
             # Check if we have the status bar
-            if atom.workspaceView.statusBar
-                # Attach the timekeeper clock view to the status bar if available
-                atom.workspaceView.statusBar.prependRight( this )
-            else
-                # Attach it directly to the workspace view
-                # TODO - Fix this (this is a work around for testing)
-                atom.workspaceView.appendToTop( this )
+            statusBar = document.querySelector("status-bar")
+            if statusBar?
+              @statusBarTile = statusBar.addRightTile(item: this, priority: 100)
 
         ### DESTROY ###
         destroy: ->
