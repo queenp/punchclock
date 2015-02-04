@@ -3,7 +3,7 @@
 url = require "url"
 
 # atom
-{$} = require 'atom'
+$ = require 'jquery'
 
 # timerkeeper
 Timer = require "./timer.coffee"
@@ -60,19 +60,20 @@ module.exports =
         # Setup event handlers - only if we are not in spec mode
         if atom.mode isnt "spec"
             # Render views
-            $( window ).on "ready", =>
+            $( window ).ready =>
                 # Attach the timer views
                 @timer.renderStatusBarViews()
 
                 # Call autostart to check if we want to autostart time tracking
                 @timer.autostart()
 
+            ## Below is severely deprecated, must fix
             # Track focus to set auto-pauses
             # Start/End autopause based on window focus
-            $( window ).on "blur", =>
+            $( window ).blur =>
                 # Just call the autopause method of the timer object
                 @timer.autopause()
-            $( window ).on "focus", =>
+            $( window ).focus =>
                 # Just call the autopause method of the timer object
                 @timer.autopause()
 
