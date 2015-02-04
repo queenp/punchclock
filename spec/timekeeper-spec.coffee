@@ -4,7 +4,7 @@ path = require "path"
 fs = require "fs"
 
 # atom
-{$, Workspace, WorkspaceView} = require "atom"
+{$} = require "atom-space-pen-views"
 
 # timekeeper
 Timer = require "../lib/timer.coffee"
@@ -18,11 +18,12 @@ describe "Timekeeper", ->
     ### ATTRIBUTES ###
     activationPromise = null
     timer = null
+    workspaceElement = null
 
     ### SETUP ###
     beforeEach ->
         # Create the workspace to be used
-        atom.workspaceView = new WorkspaceView
+        workspaceElement = atom.views.getView(atom.workspace)
 
         # Setup the activation for the package
         activationPromise = atom.packages.activatePackage( "timekeeper" )
@@ -50,6 +51,9 @@ describe "Timekeeper", ->
         # Attach to status bar
         @timer.renderStatusBarViews()
 
+        waitsForPromise ->
+          activationPromise
+
     ### TEARDOWN ###
     afterEach ->
         # Reset everything after each test
@@ -61,9 +65,9 @@ describe "Timekeeper", ->
         # On loading, we should have all time keeper values to defaults
         it "has defaults on initial load", ->
             # Wait for package to be activated and functional
-            waitsForPromise =>
-                # Waits for the activation
-                activationPromise
+            # waitsForPromise =>
+            #     # Waits for the activation
+            #     activationPromise
 
             # Verify timekeeper defaults
             runs =>
@@ -84,10 +88,6 @@ describe "Timekeeper", ->
         ### TEST ###
         # Test that timerkeeper starts tracking time automatically on load if enabled in settings
         it "starts tracking time on load if autoEnableTimeTrackigOnLoad is turned on", ->
-            # Wait for package to be activated and functional
-            waitsForPromise =>
-                # Waits for the activation
-                activationPromise
 
             # Verify that timekeeper tracks time on issuing start
             runs =>
@@ -114,7 +114,9 @@ describe "Timekeeper", ->
                     expect( @timer.clock ).toBeGreaterThan( 0 )
 
                     # Timer clock view should not be zero anymore
-                    expect( atom.workspaceView.find( "#clock" ).html() ).not.toEqual( "00:00:00" )
+                    clock = workspaceElement.querySelector( "#clock" )
+                    console.log clock
+                    expect( workspaceElement.querySelector( "#clock" ).innerHTML ).not.toEqual( "00:00:00" )
 
     ### TIMEKEEPER START ###
     describe "Timekeeper Start", ->
@@ -147,7 +149,7 @@ describe "Timekeeper", ->
                     expect( @timer.clock ).toBeGreaterThan( 0 )
 
                     # Timer clock view should not be zero anymore
-                    expect( atom.workspaceView.find( "#clock" ).html() ).not.toEqual( "00:00:00" )
+                    expect(workspaceElement.querySelector( "#clock" ).innerHTML ).not.toEqual( "00:00:00" )
 
     ### TIMEKEEPER PAUSE ###
     describe "Timekeeper Pause", ->
@@ -192,13 +194,13 @@ describe "Timekeeper", ->
                         expect( @timer.clock ).toEqual( 2 )
 
                         # Timer clock view should also show 2 seconds
-                        expect( atom.workspaceView.find( "#clock" ).html() ).toEqual( "00:00:02" )
+                        expect( workspaceElement.querySelector( "#clock" ).innerHTML ).toEqual( "00:00:02" )
 
                         # Break should not be 0 anymore
                         expect( @timer.break ).toBeGreaterThan( 0 )
 
                         # Timer status view should have pause message
-                        expect( atom.workspaceView.find( "#status" ).html() ).toEqual( "Time tracking paused!" )
+                        expect( workspaceElement.querySelector( "#status" ).innerHTML ).toEqual( "Time tracking paused!" )
 
     ### TIMEKEEPER PAUSE - START ###
     describe "Timekeeper Pause - Start", ->
@@ -259,7 +261,7 @@ describe "Timekeeper", ->
                             expect( @timer.startTimestamp ).toEqual( @timer.previousStartTimestamp )
 
                             # Timer status view should have nothing anymore, status clears after 3s
-                            expect( atom.workspaceView.find( "#status" ).html() ).toEqual( "" )
+                            expect( workspaceElement.querySelector( "#status" ).innerHTML ).toEqual( "" )
 
     ### TIMEKEEPER PAUSE - PAUSE ###
     describe "Timekeeper Pause - Pause", ->
@@ -320,7 +322,7 @@ describe "Timekeeper", ->
                             expect( @timer.startTimestamp ).toEqual( @timer.previousStartTimestamp )
 
                             # Timer status view should have nothing anymore, status clears after 3s
-                            expect( atom.workspaceView.find( "#status" ).html() ).toEqual( "" )
+                            expect( workspaceElement.querySelector( "#status" ).innerHTML ).toEqual( "" )
 
     ### TIMEKEEPER RESET ###
     describe "Timekeeper Reset", ->
@@ -402,7 +404,7 @@ describe "Timekeeper", ->
                         expect( @timer.clock ).toEqual( 0 )
 
                         # Timer clock view should also be back to default
-                        expect( atom.workspaceView.find( "#clock" ).html() ).toEqual( "00:00:00" )
+                        expect( workspaceElement.querySelector( "#clock" ).innerHTML ).toEqual( "00:00:00" )
 
     ### TIMEKEEPER FINISH ###
     describe "Timekeeper Finish", ->
