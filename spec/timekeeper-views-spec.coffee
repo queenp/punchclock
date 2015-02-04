@@ -1,6 +1,6 @@
 ### IMPORTS ###
 # atom
-{$, Workspace, WorkspaceView} = require "atom"
+{$} = require "atom-space-pen-views"
 
 # timekeeper
 Timer = require "../lib/timer.coffee"
@@ -14,11 +14,12 @@ describe "Timekeeper Views", ->
     ### ATTRIBUTES ###
     activationPromise = null
     timer = null
+    workspaceElement = null
 
     ### SETUP ###
     beforeEach ->
         # Create the workspace to be used
-        atom.workspaceView = new WorkspaceView
+        workspaceElement = atom.views.getView(atom.workspace)
 
         # Setup the activation for the package
         activationPromise = atom.packages.activatePackage( "timekeeper" )
@@ -46,6 +47,9 @@ describe "Timekeeper Views", ->
         # Attach to status bar
         @timer.renderStatusBarViews()
 
+        waitsForPromise ->
+          activationPromise
+
     ### TEARDOWN ###
     afterEach ->
         # Reset everything after each test
@@ -57,17 +61,17 @@ describe "Timekeeper Views", ->
         # On loading, we should have a timekeeper clock in the status bar
         it "renders a clock in the status bar on load", ->
             # Wait for package to be activated and functional
-            waitsForPromise =>
-                # Waits for the activation
-                activationPromise
+            # waitsForPromise =>
+            #     # Waits for the activation
+            #     activationPromise
 
             # Verify that there is one new editor that opened the notepad
             runs =>
                 # We should have the timer container element somewhere in the workspace view
-                expect( atom.workspaceView.find( ".timekeeper .timer" ) ).toExist()
+                expect( workspaceElement.querySelector( ".timekeeper .timer" ) ).toExist()
 
                 # Timer view should have been rendered with 0 on the clock
-                expect( atom.workspaceView.find( ".timekeeper .timer #clock" ).html() ).toEqual( "00:00:00" )
+                expect( workspaceElement.querySelector( ".timekeeper .timer #clock" ).innerHTML ).toEqual( "00:00:00" )
 
     ### TIMEKEEPER STATUS ###
     describe "Status Bar Timekeeper Status", ->
@@ -75,17 +79,17 @@ describe "Timekeeper Views", ->
         # On loading, we should have a timekeeper status in the status bar
         it "renders a status in the status bar on load", ->
             # Wait for package to be activated and functional
-            waitsForPromise =>
-                # Waits for the activation
-                activationPromise
+            # waitsForPromise =>
+            #     # Waits for the activation
+            #     activationPromise
 
             # Verify that there is one new editor that opened the notepad
             runs =>
                 # We should have the timer container element somewhere in the workspace view
-                expect( atom.workspaceView.find( ".timekeeper .timer" ) ).toExist()
+                expect( workspaceElement.querySelector( ".timekeeper .timer" ) ).toExist()
 
                 # Timer view should have been rendered with nothing in status
-                expect( atom.workspaceView.find( ".timekeeper .timer #status" ).html() ).toEqual( "" )
+                expect( workspaceElement.querySelector( ".timekeeper .timer #status" ).innerHTML ).toEqual( "" )
 
     ### DASHBOARD ###
     describe "Timekeeper Dashboard", ->
@@ -96,16 +100,16 @@ describe "Timekeeper Views", ->
             expect( atom.workspace.getPanes().length ).toEqual( 1 )
 
             # Wait for package to be activated and functional
-            waitsForPromise =>
-                # Waits for the activation
-                activationPromise
+            # waitsForPromise =>
+            #     # Waits for the activation
+            #     activationPromise
 
             # Verify that a new pane with the timekeeper dashboard opened
             runs =>
                 # Trigger and wait for the timekeeper view to be rendered
                 waitsFor =>
                     # Open the timekeeper dashboard now
-                    atom.workspaceView.trigger "timekeeper:dashboard"
+                    atom.commands.dispatch 'atom-workspace', "timekeeper:dashboard"
 
                 # Wait a bit for the view to be rendered
                 waits( 2000 )
@@ -116,4 +120,4 @@ describe "Timekeeper Views", ->
                     expect( atom.workspace.getPanes().length ).toEqual( 2 )
 
                     # We should have the ui-page container in the new pane
-                    expect( atom.workspaceView.find( ".timekeeper .ui-page #dashboard" ) ).toExist()
+                    expect( workspaceElement.querySelector( ".timekeeper .ui-page #dashboard" ) ).toExist()

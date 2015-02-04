@@ -1,6 +1,6 @@
 ### IMPORTS ###
 # atom
-{$, ScrollView} = require 'atom'
+{$, ScrollView} = require 'atom-space-pen-views'
 
 # timekeeper
 HeaderView = require "./header.coffee"

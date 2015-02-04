@@ -1,6 +1,6 @@
 ### IMPORTS ###
 # atom
-{$, View} = require 'atom'
+{$, View} = require 'atom-space-pen-views'
 
 # timekeeper
 Reporter = require "../reporter.coffee"
