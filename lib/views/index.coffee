@@ -66,6 +66,6 @@ module.exports =
             return "clock"
 
         ### GET URI ###
-        getUri: ->
+        getURI: ->
             # Return the uri for the view
             return @uri
