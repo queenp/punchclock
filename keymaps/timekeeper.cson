@@ -9,11 +9,11 @@
 # https://atom.io/docs/latest/advanced/keymaps
 'atom-workspace':
     # Timekeeper Timer Actions
-    'ctrl-alt-s': 'timekeeper:start'
-    'ctrl-alt-p': 'timekeeper:pause'
-    'ctrl-alt-f': 'timekeeper:finish'
-    'ctrl-alt-r': 'timekeeper:reset'
-    'ctrl-alt-a': 'timekeeper:abort'
+    'ctrl-cmd-s': 'timekeeper:start'
+    'ctrl-cmd-p': 'timekeeper:pause'
+    'ctrl-cmd-f': 'timekeeper:finish'
+    'ctrl-cmd-r': 'timekeeper:reset'
+    'ctrl-cmd-a': 'timekeeper:abort'
 
     # Timekeeper UI Actions
-    'ctrl-alt-d': 'timekeeper:dashboard'
+    'ctrl-cmd-d': 'timekeeper:dashboard'
