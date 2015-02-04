@@ -3,7 +3,7 @@
 url = require "url"
 
 # atom
-$ = require 'jquery'
+{$} = require 'atom-space-pen-views'
 
 # timerkeeper
 Timer = require "./timer.coffee"
@@ -20,9 +20,11 @@ createTimekeeperView = ( state ) ->
 ### EXPORTS ###
 module.exports =
     ### CONFIGURATION ###
-    configDefaults:
+    config:
         # Auto Enable Time Tracking - default to false, leave up to user to turn it on if desired
-        autoEnableTimeTrackingOnLoad: false
+        autoEnableTimeTrackingOnLoad:
+          type: 'boolean'
+          default: false
 
     ### ATTRIBUTES ###
     timer: null
