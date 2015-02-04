@@ -30,7 +30,9 @@ module.exports =
         ### CONSTRUCTOR ###
         constructor: ( state, timeDataPath ) ->
             # Setup the current project
-            @currentProject = atom.project.getPaths()
+            # Hardcoded index isn't great, but we're using single project path
+            # as an identifier?
+            @currentProject = atom.project.getPaths()[0]
 
             # Setup some paths
             @storagePath = timeDataPath || null
