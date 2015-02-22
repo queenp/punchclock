@@ -73,9 +73,13 @@ module.exports =
                 # Path
                 projectPath = $( "<span></span>", { class: "subtitle", text: currentProject.path } )
 
+                # Duration
+                projectDuration = $( "<div></div>" , { text: currentProject.duration } )
+
                 # Append the data we need
                 projectElement.append( projectLabel )
                 projectElement.append( projectPath )
+                projectElement.append( projectDuration )
 
                 # Add to the summary projects list
                 recentProjectsList.append( projectElement )
