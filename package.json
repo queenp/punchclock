@@ -23,7 +23,7 @@
         "url": "https://github.com/queenp/punchclock/raw/master/LICENSE.md"
     } ],
     "engines": {
-        "atom": ">0.50.0"
+        "atom": ">0.181.0"
     },
     "dependencies": {
         "moment": "*",
