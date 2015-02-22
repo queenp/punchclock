@@ -1,26 +1,26 @@
 {
-    "name": "timekeeper",
-    "prouctName": "timekeeper",
+    "name": "punchclock",
+    "prouctName": "punchclock",
     "version": "0.4.0",
-    "description": "Timekeeper handles all of your time tracking needs from within Atom.",
+    "description": "Punchclock tracks time on projects, forked from Timekeeper.",
     "keywords": [
         "timekeeper",
         "time tracking",
         "time tracker",
         "time management"
     ],
-    "homepage": "https://github.com/skulled/timekeeper",
-    "main": "./lib/timekeeper",
+    "homepage": "https://github.com/queenp/punchclock",
+    "main": "./lib/punchclock",
     "repository": {
         "type": "git",
-        "url": "https://github.com/skulled/timekeeper.git"
+        "url": "git@github.com:queenp/punchclock.git"
     },
     "bugs": {
-        "url": "https://github.com/skulled/timekeeper/issues"
+        "url": "https://github.com/queenp/punchclock/issues"
     },
     "licenses": [ {
         "type": "MIT",
-        "url": "http://github.com/skulled/timekeeper/raw/master/LICENSE.md"
+        "url": "https://github.com/queenp/punchclock/raw/master/LICENSE.md"
     } ],
     "engines": {
         "atom": ">0.50.0"
