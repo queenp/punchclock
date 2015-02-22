@@ -1,39 +1,40 @@
 {
-    "name": "punchclock",
-    "prouctName": "punchclock",
-    "version": "0.4.0",
-    "description": "Punchclock tracks time on projects, forked from Timekeeper.",
-    "keywords": [
-        "timekeeper",
-        "time tracking",
-        "time tracker",
-        "time management"
-    ],
-    "homepage": "https://github.com/queenp/punchclock",
-    "main": "./lib/punchclock",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/queenp/punchclock.git"
-    },
-    "bugs": {
-        "url": "https://github.com/queenp/punchclock/issues"
-    },
-    "licenses": [ {
-        "type": "MIT",
-        "url": "https://github.com/queenp/punchclock/raw/master/LICENSE.md"
-    } ],
-    "engines": {
-        "atom": ">0.181.0"
-    },
-    "dependencies": {
-        "moment": "*",
-        "twix": "*",
-        "mkdirp": "*",
-        "atom-space-pen-views": "^2.0.3",
-        "jquery":"^2",
-        "recursive-readdir": "^1.2.1"
-    },
-    "devDependencies": {
-    },
-    "private": true
+  "name": "punchclock",
+  "prouctName": "punchclock",
+  "version": "0.5.0",
+  "description": "Punchclock tracks time on projects, forked from Timekeeper.",
+  "keywords": [
+    "timekeeper",
+    "time tracking",
+    "time tracker",
+    "time management"
+  ],
+  "homepage": "https://github.com/queenp/punchclock",
+  "main": "./lib/punchclock",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/queenp/punchclock.git"
+  },
+  "bugs": {
+    "url": "https://github.com/queenp/punchclock/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/queenp/punchclock/raw/master/LICENSE.md"
+    }
+  ],
+  "engines": {
+    "atom": ">0.181.0"
+  },
+  "dependencies": {
+    "moment": "*",
+    "twix": "*",
+    "mkdirp": "*",
+    "atom-space-pen-views": "^2.0.3",
+    "jquery": "^2",
+    "recursive-readdir": "^1.2.1"
+  },
+  "devDependencies": {},
+  "private": true
 }
