@@ -12,7 +12,7 @@ twix = null
 # mkdirp
 mkdirp = null
 
-# timekeeper
+# punchclock
 ClockView = null
 StatusView = null
 
@@ -21,7 +21,7 @@ module.exports =
     class Timer
         ### ATTRIBUTES ###
         storagePath: null
-        projectTimekeeperPath: null
+        projectPunchclockPath: null
         currentProject: null
         clockView: null
         statusView: null
@@ -50,8 +50,8 @@ module.exports =
             # We only want to activate the package if there is a valid project
             # Not handling atom being loaded without a project at this point - TODO
             if @currentProject
-                # Call the setProjectTimekeeperPath
-                @setProjectTimekeeperPath()
+                # Call the setProjectPunchclockPath
+                @setProjectPunchclockPath()
 
                 # Keep track of start, pause, & end timestamps (in milliseconds)
                 @startTimestamp = null
@@ -73,10 +73,10 @@ module.exports =
                 @autoPauses = []
 
                 # Setup auto enable time tracking configuration
-                @autoEnable = atom.config.get( "timekeeper.autoEnableTimeTrackingOnLoad" )
+                @autoEnable = atom.config.get( "punchclock.autoEnableTimeTrackingOnLoad" )
             else
                 # Throw an error for the benefit of package manager activePackage
-                throw { stack: "- Timekeeper is active & functional only with a valid project open" }
+                throw { stack: "- Punchclock is active & functional only with a valid project open" }
 
         ### ACTIONS ###
         ### AUTO-START ###
@@ -184,7 +184,7 @@ module.exports =
             @save()
 
             # Setup the status
-            @statusView.update( "Saved timekeeper data!" )
+            @statusView.update( "Saved punchclock data!" )
 
             # Clearer for the status message
             @statusClearer = setInterval ( => @clearStatus() ), 3000
@@ -231,7 +231,7 @@ module.exports =
             @clockView.update( @format() )
 
             # Setup the final status
-            @statusView.update( "Discarded current timekeeper data!" )
+            @statusView.update( "Discarded current punchclock data!" )
 
             # Clearer for the status message
             @statusClearer = setInterval ( => @clearStatus() ), 3000
@@ -426,15 +426,15 @@ module.exports =
 
         ### SET PATH ###
 
-        ### GET PROJECT TIMEKEEPER PATH ###
-        getProjectTimekeeperPath: ->
-            # Return the current project timekeeper path
-            return @projectTimekeeperPath
+        ### GET PROJECT PUNCHCLOCK PATH ###
+        getProjectPunchclockPath: ->
+            # Return the current project punchclock path
+            return @projectPunchclockPath
 
-        ### SET PROJECT TIMEKEEPER PATH ###
-        setProjectTimekeeperPath: ->
-            # Create the full path to the project timekeeper folder
-            @projectTimekeeperPath = path.join(
+        ### SET PROJECT PUNCHCLOCK PATH ###
+        setProjectPunchclockPath: ->
+            # Create the full path to the project punchclock folder
+            @projectPunchclockPath = path.join(
                                         @getStoragePath(),
                                         new Buffer( @currentProject, "utf8" ).toString( "base64" )
             )
@@ -449,7 +449,7 @@ module.exports =
             # Check if we have a valid path provided
             if not @storagePath
                 # No path was provided, so let us build the default
-                @storagePath = "#{atom.getConfigDirPath()}/.timekeeper"
+                @storagePath = "#{atom.getConfigDirPath()}/.punchclock"
 
         ### FORMATTING ###
         ### FORMAT ###
@@ -495,7 +495,7 @@ module.exports =
         ### STATUS BAR VIEWS ###
         renderStatusBarViews: ->
             ### REQUIRE ###
-            # timekeeper
+            # punchclock
             ClockView ?= require "./views/clock.coffee"
             StatusView ?= require "./views/status.coffee"
 

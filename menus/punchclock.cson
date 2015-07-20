@@ -1,0 +1,27 @@
+# See https://atom.io/docs/latest/creating-a-package#menus for more details
+### CONTEXT MENU ###
+# 'context-menu':
+#     '.overlayer':
+#         'Enable Punchclock': 'punchclock:toggle'
+
+### MENU ###
+'menu': [ {
+    'label': 'Packages'
+    'submenu': [
+        'label': 'Punchclock'
+        'submenu': [
+            # Punchclock Timer Actions
+            { 'label': 'Start Punchclock', 'command': 'punchclock:start' },
+            { 'label': 'Pause Punchclock', 'command': 'punchclock:pause' },
+            { 'label': 'Finish Punchclock', 'command': 'punchclock:finish' },
+            { 'label': 'Reset Punchclock', 'command': 'punchclock:reset' },
+            { 'label': 'Abort Punchclock', 'command': 'punchclock:abort' },
+
+            # Separator
+            { type: 'separator' },
+
+            # Punchclock UI Actions
+            { 'label': 'Dashboard', 'command': 'punchclock:dashboard' }
+        ]
+    ]
+} ]

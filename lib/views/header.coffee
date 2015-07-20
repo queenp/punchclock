@@ -10,4 +10,4 @@ module.exports =
             # Setup the Container
             @div class: "header", =>
                 # Title
-                @h2 "Timekeeper"
+                @h2 "Punchclock"

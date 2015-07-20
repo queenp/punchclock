@@ -2,13 +2,13 @@
 # atom
 {$, ScrollView} = require 'atom-space-pen-views'
 
-# timekeeper
+# punchclock
 HeaderView = require "./header.coffee"
 DashboardView = require "./dashboard.coffee"
 
 ### EXPORTS ###
 module.exports =
-    class TimekeeperView extends ScrollView
+    class PunchclockView extends ScrollView
         ### ATTRIBUTES ###
         page: null
         controller: null
@@ -16,7 +16,7 @@ module.exports =
         ### CONTENT ###
         @content: ->
             # Setup the pane wrapper
-            @div class: "timekeeper pane-item", tabindex: -1, =>
+            @div class: "punchclock pane-item", tabindex: -1, =>
                 # Setup the container
                 @div class: "ui-page", =>
                     # Header
@@ -57,7 +57,7 @@ module.exports =
         ### GET TITLE ###
         getTitle: ->
             # Return back the title for the view
-            return "Timekeeper"
+            return "Punchclock"
 
 
         ### GET ICON NAME ###

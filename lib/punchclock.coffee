@@ -7,15 +7,15 @@ url = require "url"
 
 # timerkeeper
 Timer = require "./timer.coffee"
-TimekeeperView = null # Defer until use
+PunchclockView = null # Defer until use
 
 ### VIEW HANDLING ###
-createTimekeeperView = ( state ) ->
+createPunchclockView = ( state ) ->
     ### REQUIRES ###
-    TimekeeperView ?= require "./views/index.coffee"
+    PunchclockView ?= require "./views/index.coffee"
 
     # Check if we have a view already
-    return new TimekeeperView( state )
+    return new PunchclockView( state )
 
 ### EXPORTS ###
 module.exports =
@@ -28,7 +28,7 @@ module.exports =
 
     ### ATTRIBUTES ###
     timer: null
-    timekeeperView: null
+    punchclockView: null
 
     ### DEACTIVATE ###
     activate: ( state ) ->
@@ -50,14 +50,14 @@ module.exports =
     ### INITIALIZE ###
     initialize: ( state ) ->
         # Setup the commands
-        atom.commands.add 'atom-workspace', "timekeeper:start", => @timer.start()
-        atom.commands.add 'atom-workspace', "timekeeper:pause", => @timer.pause()
-        atom.commands.add 'atom-workspace', "timekeeper:finish", => @timer.finish()
-        atom.commands.add 'atom-workspace', "timekeeper:reset", => @timer.reset()
-        atom.commands.add 'atom-workspace', "timekeeper:abort", => @timer.abort()
+        atom.commands.add 'atom-workspace', "punchclock:start", => @timer.start()
+        atom.commands.add 'atom-workspace', "punchclock:pause", => @timer.pause()
+        atom.commands.add 'atom-workspace', "punchclock:finish", => @timer.finish()
+        atom.commands.add 'atom-workspace', "punchclock:reset", => @timer.reset()
+        atom.commands.add 'atom-workspace', "punchclock:abort", => @timer.abort()
 
         # Setup views & related commands
-        atom.commands.add 'atom-workspace', "timekeeper:dashboard", => @dashboard()
+        atom.commands.add 'atom-workspace', "punchclock:dashboard", => @dashboard()
 
         # Setup event handlers - only if we are not in spec mode
         if atom.mode isnt "spec"
@@ -82,9 +82,9 @@ module.exports =
         # Watch for theme changes/reloads to reload our view
         atom.themes.onDidChangeActiveThemes =>
             # Reset the view
-            @timekeeperView = null
+            @punchclockView = null
 
-        # Register the opener for timekeeper
+        # Register the opener for punchclock
         atom.workspace.addOpener ( uriToOpen ) =>
             # See if we can use the uri provided
             try
@@ -94,8 +94,8 @@ module.exports =
                 # There seems to have been an error, just quietly return
                 return
 
-            # Check if we have a protocol we want, and it is timekeeper, return otherwise
-            return unless protocol is 'timekeeper:'
+            # Check if we have a protocol we want, and it is punchclock, return otherwise
+            return unless protocol is 'punchclock:'
 
             # Try and verify the view/page we want to open
             try
@@ -107,29 +107,29 @@ module.exports =
 
             # Check if we have the path in our list
             if pathname not in [ "/dashboard" ]
-                # We do not recognize the timekeeper path, return
+                # We do not recognize the punchclock path, return
                 return
 
-            # Check if we have a timekeeper view we can use
-            if @timekeeperView is null
-                # Get the timekeeper view now
-                @timekeeperView = createTimekeeperView( page: pathname )
+            # Check if we have a punchclock view we can use
+            if @punchclockView is null
+                # Get the punchclock view now
+                @punchclockView = createPunchclockView( page: pathname )
 
             # Return the view
-            return @timekeeperView
+            return @punchclockView
 
     ### DEACTIVATE ###
     deactivate: ->
-        # Destroy the timekeeper object at this point
+        # Destroy the punchclock object at this point
         @timer = null
 
         # Only destroy if we ever created it
-        if @timekeeperView?
+        if @punchclockView?
             # Reset the view & destroy it
-            @timekeeperView.detach()
+            @punchclockView.detach()
 
             # Reset view
-            @timekeeperView = null
+            @punchclockView = null
 
     ### SERIALIZE ###
     serialize: ->
@@ -159,4 +159,4 @@ module.exports =
     ### DASHBOARD ###
     dashboard: ->
         # Open up the dashboard
-        atom.workspace.open( "timekeeper://ui/dashboard", split: 'right', searchAllPanes: true )
+        atom.workspace.open( "punchclock://ui/dashboard", split: 'right', searchAllPanes: true )

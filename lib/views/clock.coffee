@@ -9,7 +9,7 @@ module.exports =
         ### CONTENT ###
         @content: ->
             # Setup the container
-            @div class: 'timekeeper inline-block', =>
+            @div class: 'punchclock inline-block', =>
                 # Inner Container
                 @div class: "timer", =>
                     # Timer

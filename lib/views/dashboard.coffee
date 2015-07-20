@@ -2,7 +2,7 @@
 # atom
 {$, View} = require 'atom-space-pen-views'
 
-# timekeeper
+# punchclock
 Reporter = require "../reporter.coffee"
 
 ### EXPORTS ###

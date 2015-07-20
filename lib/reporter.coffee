@@ -75,7 +75,7 @@ module.exports =
         ### SET STORAGE PATH ###
         setStoragePath: ->
             # No path was provided, so let us build the default
-            @storagePath = "#{atom.getConfigDirPath()}/.timekeeper"
+            @storagePath = "#{atom.getConfigDirPath()}/.punchclock"
 
         ### FORMATTING ###
         ### FORMAT ###

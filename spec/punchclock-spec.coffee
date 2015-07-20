@@ -14,7 +14,7 @@ Timer = require "../lib/timer.coffee"
 # To run a specific `it` or `describe` block add an `f` to the front (e.g. `fit`
 # or `fdescribe`). Remove the `f` to unfocus the block.
 
-describe "Timekeeper", ->
+describe "Punchclock", ->
     ### ATTRIBUTES ###
     activationPromise = null
     timer = null
@@ -26,14 +26,14 @@ describe "Timekeeper", ->
         workspaceElement = atom.views.getView(atom.workspace)
 
         # Setup the activation for the package
-        activationPromise = atom.packages.activatePackage( "timekeeper" )
+        activationPromise = atom.packages.activatePackage( "punchclock" )
 
         # Setup the current datetime object
         currentDate = new Date()
 
         # Setup the file path that will save time data for this spec run
         saveFilePath = path.join(
-                            "#{atom.getConfigDirPath()}/.timekeeper",
+                            "#{atom.getConfigDirPath()}/.punchclock",
                             new Buffer( atom.project.getPaths(), "utf8" ).toString( "base64" ),
                             currentDate.getFullYear().toString(),
                             ( currentDate.getMonth() + 1 ).toString(),
@@ -59,8 +59,8 @@ describe "Timekeeper", ->
         # Reset everything after each test
         @timer.resetClocks()
 
-    ### TIMEKEEPER DEFAULTS ###
-    describe "Timekeeper Load Defaults", ->
+    ### PUNCHCLOCK DEFAULTS ###
+    describe "Punchclock Load Defaults", ->
         ### TEST ###
         # On loading, we should have all time keeper values to defaults
         it "has defaults on initial load", ->
@@ -69,7 +69,7 @@ describe "Timekeeper", ->
             #     # Waits for the activation
             #     activationPromise
 
-            # Verify timekeeper defaults
+            # Verify punchclock defaults
             runs =>
                 # Start, Pause, End Timestamps should be null
                 expect( @timer.startTimestamp ).toBeNull()
@@ -83,23 +83,23 @@ describe "Timekeeper", ->
                 # Pauses data should be empty
                 expect( @timer.pauses.length ).toEqual( 0 )
 
-    ### TIMEKEEPER AUTO-START ###
-    describe "Timekeeper Auto-Start", ->
+    ### PUNCHCLOCK AUTO-START ###
+    describe "Punchclock Auto-Start", ->
         ### TEST ###
         # Test that timerkeeper starts tracking time automatically on load if enabled in settings
         it "starts tracking time on load if autoEnableTimeTrackigOnLoad is turned on", ->
 
-            # Verify that timekeeper tracks time on issuing start
+            # Verify that punchclock tracks time on issuing start
             runs =>
                 # Start & Clock should be default
                 expect( @timer.startTimestamp ).toBeNull()
                 expect( @timer.clock ).toEqual( 0 )
 
-                # By default timekeeper sets the autoEnable configuration to false, so we have
+                # By default punchclock sets the autoEnable configuration to false, so we have
                 # to override it here and set it to true before we test it
                 @timer.autoEnable = true
 
-                # Issue the start command to timekeeper
+                # Issue the start command to punchclock
                 waitsFor =>
                     # Call timer autostart
                     @timer.autostart()
@@ -118,23 +118,23 @@ describe "Timekeeper", ->
                     console.log clock
                     expect( workspaceElement.querySelector( "#clock" ).innerHTML ).not.toEqual( "00:00:00" )
 
-    ### TIMEKEEPER START ###
-    describe "Timekeeper Start", ->
+    ### PUNCHCLOCK START ###
+    describe "Punchclock Start", ->
         ### TEST ###
-        # Test that timerkeeper tracks time spent on calling start
+        # Test that punchclock tracks time spent on calling start
         it "starts tracking time on issuing start", ->
             # Wait for package to be activated and functional
             waitsForPromise =>
                 # Waits for the activation
                 activationPromise
 
-            # Verify that timekeeper tracks time on issuing start
+            # Verify that punchclock tracks time on issuing start
             runs =>
                 # Start & Clock should be default
                 expect( @timer.startTimestamp ).toBeNull()
                 expect( @timer.clock ).toEqual( 0 )
 
-                # Issue the start command to timekeeper
+                # Issue the start command to punchclock
                 waitsFor =>
                     # Call timer start
                     @timer.start()
@@ -151,17 +151,17 @@ describe "Timekeeper", ->
                     # Timer clock view should not be zero anymore
                     expect(workspaceElement.querySelector( "#clock" ).innerHTML ).not.toEqual( "00:00:00" )
 
-    ### TIMEKEEPER PAUSE ###
-    describe "Timekeeper Pause", ->
+    ### PUNCHCLOCK PAUSE ###
+    describe "Punchclock Pause", ->
         ### TEST ###
-        # Test that timerkeeper pauses time tracking on calling start
+        # Test that punchclock pauses time tracking on calling start
         it "pauses tracking time on issuing pause", ->
             # Wait for package to be activated and functional
             waitsForPromise =>
                 # Waits for the activation
                 activationPromise
 
-            # Verify that timekeeper tracks time on issuing start
+            # Verify that punchclock tracks time on issuing start
             runs =>
                 # Issue the start to start time tracking
                 waitsFor =>
@@ -202,8 +202,8 @@ describe "Timekeeper", ->
                         # Timer status view should have pause message
                         expect( workspaceElement.querySelector( "#status" ).innerHTML ).toEqual( "Time tracking paused!" )
 
-    ### TIMEKEEPER PAUSE - START ###
-    describe "Timekeeper Pause - Start", ->
+    ### PUNCHCLOCK PAUSE - START ###
+    describe "Punchclock Pause - Start", ->
         ### TEST ###
         # Test timerkeeper restarts from where it left off when start is called from paused mode
         it "restarts time tracking when start() is called while in paused mode", ->
@@ -263,8 +263,8 @@ describe "Timekeeper", ->
                             # Timer status view should have nothing anymore, status clears after 3s
                             expect( workspaceElement.querySelector( "#status" ).innerHTML ).toEqual( "" )
 
-    ### TIMEKEEPER PAUSE - PAUSE ###
-    describe "Timekeeper Pause - Pause", ->
+    ### PUNCHCLOCK PAUSE - PAUSE ###
+    describe "Punchclock Pause - Pause", ->
         ### TEST ###
         # Test timerkeeper restarts from where it left off when pause is called from paused mode
         it "restarts time tracking when pause() is called while in paused mode", ->
@@ -324,8 +324,8 @@ describe "Timekeeper", ->
                             # Timer status view should have nothing anymore, status clears after 3s
                             expect( workspaceElement.querySelector( "#status" ).innerHTML ).toEqual( "" )
 
-    ### TIMEKEEPER RESET ###
-    describe "Timekeeper Reset", ->
+    ### PUNCHCLOCK RESET ###
+    describe "Punchclock Reset", ->
         ### TEST ###
         # Test timerkeeper resets & starts fresh on calling reset()
         it "resets time tracking data and starts fresh on calling reset()", ->
@@ -366,8 +366,8 @@ describe "Timekeeper", ->
                         # The start timestamp should be greater since we restarted later in time
                         expect( @timer.startTimestamp ).toBeGreaterThan( @timer.previousStartTimestamp )
 
-    ### TIMEKEEPER ABORT ###
-    describe "Timekeeper Abort", ->
+    ### PUNCHCLOCK ABORT ###
+    describe "Punchclock Abort", ->
         ### TEST ###
         # Test timerkeeper abort & resets everything on calling abort()
         it "discards all time tracking data on calling abort() & stops tracking time", ->
@@ -406,8 +406,8 @@ describe "Timekeeper", ->
                         # Timer clock view should also be back to default
                         expect( workspaceElement.querySelector( "#clock" ).innerHTML ).toEqual( "00:00:00" )
 
-    ### TIMEKEEPER FINISH ###
-    describe "Timekeeper Finish", ->
+    ### PUNCHCLOCK FINISH ###
+    describe "Punchclock Finish", ->
         ### TEST ###
         # Test timerkeeper saves time tracking data on calling start
         it "saves tracked time data on calling finish()", ->
