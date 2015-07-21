@@ -37,15 +37,16 @@ module.exports =
         # Wrap the below in try catch since we throw an error from the constructor on
         # no valid current project being opened. We still call the Timer since we want to
         # handle any data save from a previous session
-        try
-            # Setup the Timer object
-            @timer = new Timer( state )
+        if (atom.project.getPaths().length > 0)
+          try
+              # Setup the Timer object
+              @timer = new Timer( state )
 
-            # Call initialize to setup commands & event handlers
-            @initialize( state )
-        catch timerError
-            # Throw the error for the benefit of package manager activePackage
-            throw timerError
+              # Call initialize to setup commands & event handlers
+              @initialize( state )
+          catch timerError
+              # Throw the error for the benefit of package manager activePackage
+              throw timerError
 
     ### INITIALIZE ###
     initialize: ( state ) ->
