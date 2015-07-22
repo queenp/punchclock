@@ -1,7 +1,7 @@
 Punchclock
 ==========
 
-Timekeeper allows you to track time spent on projects, and provides (or rather will provide) ways to view the data in different ways as well as the ability to export and integrate this data with external endpoints.
+Punchclock allows you to track time spent on projects, and provides (or rather will provide) ways to view the data in different ways as well as the ability to export and integrate this data with external endpoints.
 
 ##### Default Status Bar View
 
@@ -15,9 +15,9 @@ Timekeeper allows you to track time spent on projects, and provides (or rather w
 
 ![Punchclock Paused](https://github.com/queenp/punchclock/raw/master/docs/assets/images/timekeeper-status-bar-view-paused.png)
 
-As of `v0.3.0`, it provides a preliminary dashboard to view time tracking data, which is very incomplete and pretty useless. Further reporting & dashboard functionality coming soon!!
+As of 0.6.1, Punchclock  has basic support for loading/unloading projects from Atom. The project is defined by the FIRST project path given (for lack of a clearer definition of what a project is in Atom for now).
 
-> *Although every effort is made to keep things as stable as possible, please do note that the package is under constant development so there might be occasional bugs. If you run across any issues, please [add an issue](https://github.com/skulled/timekeeper/issues/new) with the details.*
+> *Although every effort is made to keep things as stable as possible, please do note that the package is under constant development so there might be occasional bugs. If you run across any issues, please [add an issue](https://github.com/queenp/punchclock/issues/new) with the details.*
 
 Installation
 ------------

@@ -74,13 +74,12 @@ module.exports =
 
                 # Setup auto enable time tracking configuration
                 @autoEnable = atom.config.get( "punchclock.autoEnableTimeTrackingOnLoad" )
-            else
-                # Throw an error for the benefit of package manager activePackage
-                throw { stack: "- Punchclock is active & functional only with a valid project open" }
 
         ### ACTIONS ###
         ### AUTO-START ###
         autostart: ->
+            if @currentProject is undefined
+                @statusView.update("No project loaded.")
             # Let us check if we want to autostart time tracking
             if @autoEnable is true
                 # We seem to have auto-enable time tracking turned on, so let us start
@@ -197,6 +196,20 @@ module.exports =
 
             # Set our active flag to false at this point
             @isActive = false
+
+        ### RELOAD TIMER ###
+        didChangePaths: ->
+            # Check whether we have root project
+            if atom.project.getPaths()[0] == null
+                @statusView.update("No project open")
+            # Check if we've actually changed current path
+            else unless atom.project.getPaths()[0] is @currentProject
+                @finish() if @isActive # finish timer, reset variables, save.
+                @resetClocks()
+                @clearStatus()
+                @currentProject = atom.project.getPaths()[0]
+                @setStoragePath()
+                @autostart()
 
         ### RESET ###
         reset: ->

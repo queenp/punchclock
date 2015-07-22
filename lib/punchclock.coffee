@@ -30,23 +30,22 @@ module.exports =
     timer: null
     punchclockView: null
 
-    ### DEACTIVATE ###
+    ### ACTIVATE ###
     activate: ( state ) ->
         # We only want to activate the package if there is a valid project
         # Not handling atom being loaded without a project at this point - TODO
         # Wrap the below in try catch since we throw an error from the constructor on
         # no valid current project being opened. We still call the Timer since we want to
         # handle any data save from a previous session
-        if (atom.project.getPaths().length > 0)
-          try
-              # Setup the Timer object
-              @timer = new Timer( state )
+        try
+            # Setup the Timer object
+            @timer = new Timer( state )
 
-              # Call initialize to setup commands & event handlers
-              @initialize( state )
-          catch timerError
-              # Throw the error for the benefit of package manager activePackage
-              throw timerError
+            # Call initialize to setup commands & event handlers
+            @initialize( state )
+        catch timerError
+            # Throw the error for the benefit of package manager activePackage
+            throw timerError
 
     ### INITIALIZE ###
     initialize: ( state ) ->
@@ -66,7 +65,6 @@ module.exports =
             $( window ).ready =>
                 # Attach the timer views
                 @timer.renderStatusBarViews()
-
                 # Call autostart to check if we want to autostart time tracking
                 @timer.autostart()
 
@@ -84,6 +82,9 @@ module.exports =
         atom.themes.onDidChangeActiveThemes =>
             # Reset the view
             @punchclockView = null
+
+        atom.project.onDidChangePaths =>
+            @timer.didChangePaths()
 
         # Register the opener for punchclock
         atom.workspace.addOpener ( uriToOpen ) =>
