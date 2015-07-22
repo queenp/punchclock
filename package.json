@@ -1,7 +1,7 @@
 {
   "name": "punchclock",
   "prouctName": "punchclock",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Punchclock tracks time on projects, forked from Timekeeper.",
   "keywords": [
     "punchclock",
