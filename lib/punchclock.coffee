@@ -78,13 +78,14 @@ module.exports =
                 # Just call the autopause method of the timer object
                 @timer.autopause()
 
+            #register callback for loading/unloading project folders.
+            atom.project.onDidChangePaths =>
+                @timer.didChangePaths()
+
         # Watch for theme changes/reloads to reload our view
         atom.themes.onDidChangeActiveThemes =>
             # Reset the view
             @punchclockView = null
-
-        atom.project.onDidChangePaths =>
-            @timer.didChangePaths()
 
         # Register the opener for punchclock
         atom.workspace.addOpener ( uriToOpen ) =>

@@ -34,7 +34,7 @@ describe "Punchclock", ->
         # Setup the file path that will save time data for this spec run
         saveFilePath = path.join(
                             "#{atom.getConfigDirPath()}/.punchclock",
-                            new Buffer( atom.project.getPaths(), "utf8" ).toString( "base64" ),
+                            new Buffer( atom.project.getPaths()[0], "utf8" ).toString( "base64" ),
                             currentDate.getFullYear().toString(),
                             ( currentDate.getMonth() + 1 ).toString(),
                             currentDate.getDate() + ".json"
@@ -115,7 +115,6 @@ describe "Punchclock", ->
 
                     # Timer clock view should not be zero anymore
                     clock = workspaceElement.querySelector( "#clock" )
-                    console.log clock
                     expect( workspaceElement.querySelector( "#clock" ).innerHTML ).not.toEqual( "00:00:00" )
 
     ### PUNCHCLOCK START ###
