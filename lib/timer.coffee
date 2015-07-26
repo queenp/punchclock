@@ -88,44 +88,48 @@ module.exports =
 
         ### START ###
         start: ->
-            # Check if we are coming out of a pause
-            if @pauseTimestamp is null
-                # Start the time tracking at this point only if we aren't already tracking
-                if @startTimestamp is null
-                    # Setup the start date time only if we are not in paused state
-                    # otherwise start date time will keep changing which is wrong
-                    @startTimestamp = Date.now()
+            unless @currentProject == undefined
+                # Check if we are coming out of a pause
+                if @pauseTimestamp is null
+                    # Start the time tracking at this point only if we aren't already tracking
+                    if @startTimestamp is null
+                        # Setup the start date time only if we are not in paused state
+                        # otherwise start date time will keep changing which is wrong
+                        @startTimestamp = Date.now()
 
-                    # Initialize the time incrementer
-                    @incrementer = setInterval ( => @step() ), 1000
+                        # Initialize the time incrementer
+                        @incrementer = setInterval ( => @step() ), 1000
 
-                    # Display status
-                    @statusView.update( "Started time tracking ..." )
+                        # Display status
+                        @statusView.update( "Started time tracking ..." )
+                    else
+                        # We are already tracking time, nothing to do here
+                        @statusView.update( "Already tracking time ..." )
                 else
-                    # We are already tracking time, nothing to do here
-                    @statusView.update( "Already tracking time ..." )
+                    # Display continuing status
+                    @statusView.update( "Continuing time tracking ..." )
+
+                    # Add the pause/break data to our holder
+                    @pauses.push { start: @pauseTimestamp, duration: @break }
+
+                    # Reset the pause stuff now
+                    @pauseTimestamp = null
+                    @break = 0
+
+                    # Remove the class from the clock view
+                    @clockView.removeClass( "paused" )
+
+                # Update the clock view
+                @clockView.update( @format() )
+
+                # Clearer for the status message
+                @statusClearer = setInterval ( => @clearStatus() ), 3000
+
+                # Set our active flag to true at this point, since we will be actively tracking time
+                @isActive = true
             else
-                # Display continuing status
-                @statusView.update( "Continuing time tracking ..." )
-
-                # Add the pause/break data to our holder
-                @pauses.push { start: @pauseTimestamp, duration: @break }
-
-                # Reset the pause stuff now
-                @pauseTimestamp = null
-                @break = 0
-
-                # Remove the class from the clock view
-                @clockView.removeClass( "paused" )
-
-            # Update the clock view
-            @clockView.update( @format() )
-
-            # Clearer for the status message
-            @statusClearer = setInterval ( => @clearStatus() ), 3000
-
-            # Set our active flag to true at this point, since we will be actively tracking time
-            @isActive = true
+                @statusView.update("No project loaded.")
+                @statusClearer = setInterval ( => @statusView.update("") ), 3000
 
         ### AUTO-PAUSE ###
         autopause: ->
