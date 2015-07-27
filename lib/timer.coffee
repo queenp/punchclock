@@ -48,32 +48,29 @@ module.exports =
                     @save( state.timerObject )
 
             # We only want to activate the package if there is a valid project
-            # Not handling atom being loaded without a project at this point - TODO
-            if @currentProject
-                # Call the setProjectPunchclockPath
-                @setProjectPunchclockPath()
+            if @currentProject then @setProjectPunchclockPath else @projectPunchclockPath = null
 
-                # Keep track of start, pause, & end timestamps (in milliseconds)
-                @startTimestamp = null
-                @pauseTimestamp = null
-                @endTimestamp = null
+            # Keep track of start, pause, & end timestamps (in milliseconds)
+            @startTimestamp = null
+            @pauseTimestamp = null
+            @endTimestamp = null
 
-                # Keep track of auto-pause timestamps (in milliseconds)
-                @autoPauseStartTimestamp = null
-                @autoPauseEndTimestamp = null
+            # Keep track of auto-pause timestamps (in milliseconds)
+            @autoPauseStartTimestamp = null
+            @autoPauseEndTimestamp = null
 
-                # Actual timer
-                @clock = 0
-                @break = 0
+            # Actual timer
+            @clock = 0
+            @break = 0
 
-                # Holder for all pauses/breaks - manual only
-                @pauses = []
+            # Holder for all pauses/breaks - manual only
+            @pauses = []
 
-                # Holder for all auto-pauses
-                @autoPauses = []
+            # Holder for all auto-pauses
+            @autoPauses = []
 
-                # Setup auto enable time tracking configuration
-                @autoEnable = atom.config.get( "punchclock.autoEnableTimeTrackingOnLoad" )
+            # Setup auto enable time tracking configuration
+            @autoEnable = atom.config.get( "punchclock.autoEnableTimeTrackingOnLoad" )
 
         ### ACTIONS ###
         ### AUTO-START ###
@@ -88,48 +85,44 @@ module.exports =
 
         ### START ###
         start: ->
-            unless @currentProject == undefined
-                # Check if we are coming out of a pause
-                if @pauseTimestamp is null
-                    # Start the time tracking at this point only if we aren't already tracking
-                    if @startTimestamp is null
-                        # Setup the start date time only if we are not in paused state
-                        # otherwise start date time will keep changing which is wrong
-                        @startTimestamp = Date.now()
+            # Check if we are coming out of a pause
+            if @pauseTimestamp is null
+                # Start the time tracking at this point only if we aren't already tracking
+                if @startTimestamp is null
+                    # Setup the start date time only if we are not in paused state
+                    # otherwise start date time will keep changing which is wrong
+                    @startTimestamp = Date.now()
 
-                        # Initialize the time incrementer
-                        @incrementer = setInterval ( => @step() ), 1000
+                    # Initialize the time incrementer
+                    @incrementer = setInterval ( => @step() ), 1000
 
-                        # Display status
-                        @statusView.update( "Started time tracking ..." )
-                    else
-                        # We are already tracking time, nothing to do here
-                        @statusView.update( "Already tracking time ..." )
+                    # Display status
+                    @statusView.update( "Started time tracking ..." )
                 else
-                    # Display continuing status
-                    @statusView.update( "Continuing time tracking ..." )
-
-                    # Add the pause/break data to our holder
-                    @pauses.push { start: @pauseTimestamp, duration: @break }
-
-                    # Reset the pause stuff now
-                    @pauseTimestamp = null
-                    @break = 0
-
-                    # Remove the class from the clock view
-                    @clockView.removeClass( "paused" )
-
-                # Update the clock view
-                @clockView.update( @format() )
-
-                # Clearer for the status message
-                @statusClearer = setInterval ( => @clearStatus() ), 3000
-
-                # Set our active flag to true at this point, since we will be actively tracking time
-                @isActive = true
+                    # We are already tracking time, nothing to do here
+                    @statusView.update( "Already tracking time ..." )
             else
-                @statusView.update("No project loaded.")
-                @statusClearer = setInterval ( => @statusView.update("") ), 3000
+                # Display continuing status
+                @statusView.update( "Continuing time tracking ..." )
+
+                # Add the pause/break data to our holder
+                @pauses.push { start: @pauseTimestamp, duration: @break }
+
+                # Reset the pause stuff now
+                @pauseTimestamp = null
+                @break = 0
+
+                # Remove the class from the clock view
+                @clockView.removeClass( "paused" )
+
+            # Update the clock view
+            @clockView.update( @format() )
+
+            # Clearer for the status message
+            @statusClearer = setInterval ( => @clearStatus() ), 3000
+
+            # Set our active flag to true at this point, since we will be actively tracking time
+            @isActive = true
 
         ### AUTO-PAUSE ###
         autopause: ->
@@ -169,51 +162,62 @@ module.exports =
 
         ### FINISH ###
         finish: ->
-            # Setup the end timestamp (in milliseconds)
-            @endTimestamp = Date.now()
+            if @currentProject == undefined
+                # TODO: Prompt to save project, or discard data.
+                alert("No project loaded\nCan't save timekeeping data.")
+            else
+                # Setup the end timestamp (in milliseconds)
+                @endTimestamp = Date.now()
 
-            # Clear the clock incrementer
-            clearTimeout @incrementer
+                # Clear the clock incrementer
+                clearTimeout @incrementer
 
-            # Check if we are in pause when we finish
-            if @pauseTimestamp isnt null
-                # We need to add the pause to the pauses data object
-                @pauses.push { start: @pauseTimestamp, duration: @break }
+                # Check if we are in pause when we finish
+                if @pauseTimestamp isnt null
+                    # We need to add the pause to the pauses data object
+                    @pauses.push { start: @pauseTimestamp, duration: @break }
 
-                # Remove the class from the clock view
-                @clockView.removeClass( "paused" )
+                    # Remove the class from the clock view
+                    @clockView.removeClass( "paused" )
 
-            # Save the time tracking data at this point
-            @save()
+                # Save the time tracking data at this point
+                @save()
 
-            # Setup the status
-            @statusView.update( "Saved punchclock data!" )
+                # Setup the status
+                @statusView.update( "Saved punchclock data!" )
 
-            # Clearer for the status message
-            @statusClearer = setInterval ( => @clearStatus() ), 3000
+                # Clearer for the status message
+                @statusClearer = setInterval ( => @clearStatus() ), 3000
 
-            # Reset the timers
-            @resetClocks()
-
-            # Update the clock now
-            @clockView.update( @format() )
-
-            # Set our active flag to false at this point
-            @isActive = false
-
-        ### RELOAD TIMER ###
-        didChangePaths: ->
-            # Check whether we have root project
-            if atom.project.getPaths()[0] == null
-                @statusView.update("No project open")
-            # Check if we've actually changed current path
-            else unless atom.project.getPaths()[0] is @currentProject
-                @finish() if @isActive # finish timer, reset variables, save.
+                # Reset the timers
                 @resetClocks()
-                @clearStatus()
-                @currentProject = atom.project.getPaths()[0]
-                @setStoragePath()
-                @autostart()
+
+                # Update the clock now
+                @clockView.update( @format() )
+
+                # Set our active flag to false at this point
+                @isActive = false
+
+        ### RELOAD TIMER ONDIDCHANGEPATHS ###
+        didChangePaths: ->
+            newRoot = atom.project.getPaths()[0]
+            # Unless we've just closed the last remaining project folder
+            switch newRoot
+                when @currentProject # root path hasn't changed
+                    break            # do nothing
+                when undefined       # we've closed the previous project
+                    @finish() if @isActive
+                    @resetClocks()
+                    @clearStatus()
+                    @currentProject = newRoot
+                    @autostart()
+                else                 # We've opened a new project path.
+                    if @currentProject == undefined
+                        @currentProject = newRoot
+                        @autostart()
+                    else             # Current project has changed
+                        break        # Not sure if/how this circumstance arises.
+                                     # Do nothing for now.
 
         ### RESET ###
         reset: ->
