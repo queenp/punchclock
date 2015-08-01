@@ -3,6 +3,8 @@
 fs = null
 path = require "path"
 
+{CompositeDisposable} = require 'event-kit'
+
 # moment
 moment = null
 
@@ -26,9 +28,11 @@ module.exports =
         clockView: null
         statusView: null
         isActive: false
+        eventSubs: new CompositeDisposable()
 
         ### CONSTRUCTOR ###
         constructor: ( state, timeDataPath ) ->
+
             # Setup the current project
             # Hardcoded index isn't great, but we're using single project path
             # as an identifier?
@@ -49,6 +53,9 @@ module.exports =
 
             # We only want to activate the package if there is a valid project
             if @currentProject then @setProjectPunchclockPath else @projectPunchclockPath = null
+
+            @textEditors = atom.workspace.getTextEditors()
+            @currentEditor = atom.workspace.getActiveTextEditor()
 
             # Keep track of start, pause, & end timestamps (in milliseconds)
             @startTimestamp = null
@@ -72,11 +79,11 @@ module.exports =
             # Setup auto enable time tracking configuration
             @autoEnable = atom.config.get( "punchclock.autoEnableTimeTrackingOnLoad" )
 
+            @eventSubs.add atom.workspace.observeTextEditors(@observeTextEditors)
+
         ### ACTIONS ###
         ### AUTO-START ###
         autostart: ->
-            if @currentProject is undefined
-                @statusView.update("No project loaded.")
             # Let us check if we want to autostart time tracking
             if @autoEnable is true
                 # We seem to have auto-enable time tracking turned on, so let us start
@@ -163,7 +170,8 @@ module.exports =
         ### FINISH ###
         finish: ->
             if @currentProject == undefined
-                # TODO: Prompt to save project, or discard data.
+                # TODO: Prompt to save project, or discard data rather than
+                # simply refusing to do anything.
                 alert("No project loaded\nCan't save timekeeping data.")
             else
                 # Setup the end timestamp (in milliseconds)
@@ -197,6 +205,21 @@ module.exports =
 
                 # Set our active flag to false at this point
                 @isActive = false
+
+        ### NEW TEXT EDITOR HANDLER ###
+        observeTextEditors: (editor) =>
+            #Triggers on new editor window loaded
+            @eventSubs.add editor.onDidDestroy =>
+                @didCloseEditor(editor)
+
+        didCloseEditor: (editor)->
+            #Triggers on editor window closed
+            if editor and editor.getPath()
+                #TODO: Save data per TextEditor
+                console.log("Closed saved texteditor tab. Persist time keeping")
+            else
+                console.log("Closed unsaved texteditor tab. Don't bother.")
+                #TODO: Discard data when destroyed TextEditor unsaved
 
         ### RELOAD TIMER ONDIDCHANGEPATHS ###
         didChangePaths: ->
@@ -539,3 +562,7 @@ module.exports =
             if @pauseTimestamp is null
                 # Clear the status
                 @statusView.clear()
+
+        ### TEAR DOWN TIMER OBJECT ###
+        destroy: ->
+            @eventsubs.dispose() # Clean up event subscriptions

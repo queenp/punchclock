@@ -124,6 +124,7 @@ module.exports =
     ### DEACTIVATE ###
     deactivate: ->
         # Destroy the punchclock object at this point
+        @timer.destroy()
         @timer = null
 
         # Only destroy if we ever created it
