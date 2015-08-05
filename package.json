@@ -35,7 +35,8 @@
     "atom-space-pen-views": "^2.0.3",
     "jquery": "^2",
     "recursive-readdir": "^1.2.1",
-    "event-kit": "*"
+    "event-kit": "*",
+    "television": ">=0.7.0"
   },
   "devDependencies": {},
   "private": true
