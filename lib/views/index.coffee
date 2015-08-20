@@ -49,6 +49,9 @@ module.exports =
 
                 # Now render the view in the main view
                 @content.append( viewToDisplay )
+            @on 'click', '.project', (e) =>
+                # Open up project data
+                console.log($(e.target.closest('.item.project')))
 
         ### INTERNAL METHODS ###
         ### GET TITLE ###
