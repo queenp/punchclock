@@ -26,18 +26,15 @@ module.exports =
                     @div outlet: "content", class: "content"
 
         ### CONSTRUCTOR ###
-        constructor: ( { @page } ) ->
-            # Check if we have a valid requested page
+
+        ### INITIALIZE ###
+        initialize: ({@page}) ->
+            # Let us check what kind of view we want to generate
+            super
             if @page?
                 # Get the uri path without the forward slash
                 @controller = @page.substring( 1 ).split( "/" )[0]
-
-            # Call the super
-            super
-
-        ### INITIALIZE ###
-        initialize: ->
-            # Let us check what kind of view we want to generate
+                        # Let us check what kind of view we want to generate
             if @controller?
                 # We have a valid controller, so let us create the view
                 # based off that
