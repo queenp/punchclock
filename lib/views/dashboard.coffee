@@ -35,10 +35,12 @@ module.exports =
             if currentProjects.length is 0
                 # Set the content to no time tracking
                 @message.text( "You are currently not tracking time for any projects! :(" )
-            else
+            else if currentProjects.length is 1
+                # We have one project, show the message
+                @message.text( "You are currently tracking time for one project" )
+            else 
                 # We have some projects, show the message
                 @message.text( "You are currently tracking time for #{currentProjects.length} projects" )
-
             # Add the available projects to the summary list
             if currentProjects.length > 0
                 # Display Recent Projects
