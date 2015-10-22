@@ -2,9 +2,6 @@
 # core
 url = require "url"
 
-# atom
-{$} = require 'atom-space-pen-views'
-
 # timerkeeper
 Timer = require "./timer.coffee"
 PunchclockView = null # Defer until use
@@ -61,20 +58,13 @@ module.exports =
 
         # Setup event handlers - only if we are not in spec mode
         if atom.mode isnt "spec"
-            # Render views
-            $( window ).ready =>
-                # Attach the timer views
-                # @timer.renderStatusBarViews(@statusBar)
-                # Call autostart to check if we want to autostart time tracking
-                @timer.autostart()
-
             ## Below is severely deprecated, must fix
             # Track focus to set auto-pauses
             # Start/End autopause based on window focus
-            $( window ).blur =>
+            window.onblur = =>
                 # Just call the autopause method of the timer object
                 @timer.autopause()
-            $( window ).focus =>
+            window.onfocus = =>
                 # Just call the autopause method of the timer object
                 @timer.autopause()
 
@@ -123,6 +113,7 @@ module.exports =
 
     consumeStatusBar: (statusBar) ->
         @statusBarTile = @timer.renderStatusBarViews(statusBar)
+        @timer.autostart()
 
     ### DEACTIVATE ###
     deactivate: ->

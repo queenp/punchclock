@@ -1,6 +1,4 @@
 ### IMPORTS ###
-# atom
-{$} = require "atom-space-pen-views"
 
 # timekeeper
 Timer = require "../lib/timer.coffee"

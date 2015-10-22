@@ -32,11 +32,9 @@
     "moment": "*",
     "twix": "*",
     "mkdirp": "*",
-    "atom-space-pen-views": "^2.0.3",
     "etch": "^0.1.0",
     "recursive-readdir": "^1.2.1",
     "event-kit": "*",
-    "television": ">=0.7.0"
   },
   "devDependencies": {},
   "consumedServices": {
