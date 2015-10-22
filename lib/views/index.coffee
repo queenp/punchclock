@@ -4,7 +4,7 @@
 
 # punchclock
 HeaderView = require "./header.coffee"
-DashboardView = require "./dashboard.coffee"
+DashboardView = require "./dashboard.js"
 
 ### EXPORTS ###
 module.exports =
