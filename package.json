@@ -1,6 +1,6 @@
 {
   "name": "punchclock",
-  "prouctName": "punchclock",
+  "productName": "Punchclock",
   "version": "0.6.3",
   "description": "Punchclock tracks time on projects, forked from Timekeeper.",
   "keywords": [
@@ -33,11 +33,18 @@
     "twix": "*",
     "mkdirp": "*",
     "atom-space-pen-views": "^2.0.3",
+    "etch": "*",
     "jquery": "^2",
     "recursive-readdir": "^1.2.1",
     "event-kit": "*",
     "television": ">=0.7.0"
   },
   "devDependencies": {},
-  "private": true
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
+  }
 }

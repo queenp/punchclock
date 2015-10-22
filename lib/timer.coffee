@@ -537,21 +537,21 @@ module.exports =
 
         ### VIEWS ###
         ### STATUS BAR VIEWS ###
-        renderStatusBarViews: ->
+        renderStatusBarViews:(statusBar) ->
             ### REQUIRE ###
             # punchclock
-            ClockView ?= require "./views/clock.coffee"
-            StatusView ?= require "./views/status.coffee"
+            ClockView ?= require "./views/clock"
+            StatusView ?= require "./views/status"
 
             # Create the status bar views
             @clockView ?= new ClockView()
             @statusView ?= new StatusView()
 
             # Attach the clock first
-            @clockView.attach()
+            @clockView.attach(statusBar)
 
             # Attach the status
-            @statusView.attach()
+            @statusView.attach(statusBar)
 
         ### CLEAR STATUS ###
         clearStatus: ->

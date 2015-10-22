@@ -7,9 +7,6 @@ path = require "path"
 # moment
 moment = null
 
-# twix
-twix = null
-
 ### EXPORTS ###
 module.exports =
     class Reporter

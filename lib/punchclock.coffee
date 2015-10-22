@@ -64,7 +64,7 @@ module.exports =
             # Render views
             $( window ).ready =>
                 # Attach the timer views
-                @timer.renderStatusBarViews()
+                @timer.renderStatusBarViews(@statusBar)
                 # Call autostart to check if we want to autostart time tracking
                 @timer.autostart()
 
@@ -121,6 +121,9 @@ module.exports =
             # Return the view
             return @punchclockView
 
+    consumeStatusBar: (statusBar) ->
+        @statusBar = statusBar
+
     ### DEACTIVATE ###
     deactivate: ->
         # Destroy the punchclock object at this point
@@ -134,6 +137,9 @@ module.exports =
 
             # Reset view
             @punchclockView = null
+
+        @statusBarTile?.destroy()
+        @statusBarTile = null
 
     ### SERIALIZE ###
     serialize: ->
