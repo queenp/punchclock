@@ -12,7 +12,7 @@ PunchclockView = null # Defer until use
 ### VIEW HANDLING ###
 createPunchclockView = ( state ) ->
     ### REQUIRES ###
-    PunchclockView ?= require "./views/index.coffee"
+    PunchclockView ?= require "./views/index.js"
 
     # Check if we have a view already
     return new PunchclockView( state )
@@ -64,7 +64,7 @@ module.exports =
             # Render views
             $( window ).ready =>
                 # Attach the timer views
-                @timer.renderStatusBarViews(@statusBar)
+                # @timer.renderStatusBarViews(@statusBar)
                 # Call autostart to check if we want to autostart time tracking
                 @timer.autostart()
 
@@ -122,7 +122,7 @@ module.exports =
             return @punchclockView
 
     consumeStatusBar: (statusBar) ->
-        @statusBar = statusBar
+        @statusBarTile = @timer.renderStatusBarViews(statusBar)
 
     ### DEACTIVATE ###
     deactivate: ->
