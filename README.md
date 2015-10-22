@@ -115,3 +115,5 @@ Any feedback is appreciated!
 There are a number of features that are under development, but if there are specific features you would like to see added, please [add an issue](https://github.com/queenp/punchclock/issues/new) and tag it as "feature".
 
 If you encounter any bugs or cannot get something working, please check the current [open issues](https://github.com/queenp/punchclock/issues) to see if it has already been raised, before adding a new issue with the problem you are facing.
+
+I work on this project in my spare time so unfortunately I can make absolutely no guarantees about fixes.
