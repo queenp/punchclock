@@ -34,7 +34,7 @@
     "mkdirp": "*",
     "etch": "^0.1.0",
     "recursive-readdir": "^1.2.1",
-    "event-kit": "*",
+    "event-kit": "*"
   },
   "devDependencies": {},
   "consumedServices": {
