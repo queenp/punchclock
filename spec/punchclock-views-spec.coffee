@@ -1,6 +1,4 @@
 ### IMPORTS ###
-# television
-tv = require 'television'
 
 # punchclock
 Timer = require '../lib/timer.coffee'

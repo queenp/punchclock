@@ -3,9 +3,6 @@
 path = require "path"
 fs = require "fs"
 
-# atom
-{$} = require "atom-space-pen-views"
-
 # timekeeper
 Timer = require "../lib/timer.coffee"
 
