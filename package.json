@@ -29,14 +29,20 @@
     "atom": ">0.174.0 <2.0.0"
   },
   "dependencies": {
-    "moment": "*",
+    "moment": ">2.0.0",
     "twix": "*",
     "mkdirp": "*",
     "etch": "^0.1.0",
     "recursive-readdir": "^1.2.1",
-    "event-kit": "*"
+    "event-kit": "*",
+    "chai": "^3.2.0",
+    "es6-promise": "*",
+    "sinon": "*",
+    "sinon-chai": "*"
   },
-  "devDependencies": {},
+  "devDependencies": {
+      "babel": "*"
+  },
   "consumedServices": {
     "status-bar": {
       "versions": {

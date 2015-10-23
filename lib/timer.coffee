@@ -540,7 +540,7 @@ module.exports =
         renderStatusBarViews:(statusBar) ->
             ### REQUIRE ###
             # punchclock
-            ClockView ?= require "./views/clock"
+            ClockView ?= require "./views/ClockView"
             StatusView ?= require "./views/status"
 
             # Create the status bar views

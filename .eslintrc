@@ -1,0 +1,9 @@
+{
+  "parser": "babel-eslint",
+  "rules": {
+    "strict": 1
+},
+  "ecmaFeatures": {
+    "modules": true
+  }
+}
