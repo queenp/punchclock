@@ -5,6 +5,8 @@ path = require "path"
 
 {CompositeDisposable} = require 'event-kit'
 
+$ = require 'jquery'
+
 # moment
 moment = null
 
@@ -17,6 +19,7 @@ mkdirp = null
 # punchclock
 ClockView = null
 StatusView = null
+PunchCard = require 'models/PunchCard'
 
 ### EXPORTS ###
 module.exports =
@@ -33,10 +36,14 @@ module.exports =
         ### CONSTRUCTOR ###
         constructor: ( state, timeDataPath ) ->
 
+            @punchCard = new PunchCard();
+
             # Setup the current project
             # Hardcoded index isn't great, but we're using single project path
             # as an identifier?
-            @currentProject = atom.project.getPaths()[0]
+            repos = atom.project.getRepositories()
+            @currentProject = repos.length > 0 ?  repos[0].repo.workingDirectory
+
 
             # Setup some paths
             @storagePath = timeDataPath || null
@@ -47,9 +54,9 @@ module.exports =
             # Check if we have a state being passed through
             if state
                 # Check if we have any time tracking data from the previous state
-                if state.timerObject and state.timerObject.start
+                if state.punchCard and state.punchCard.start
                     # We have something from previous state, let us save it
-                    @save( state.timerObject )
+                    @save( state.punchCard )
 
             # We only want to activate the package if there is a valid project
             if @currentProject then @setProjectPunchclockPath else @projectPunchclockPath = null
@@ -540,8 +547,8 @@ module.exports =
         renderStatusBarViews:(statusBar) ->
             ### REQUIRE ###
             # punchclock
-            ClockView ?= require "./views/clock"
-            StatusView ?= require "./views/status"
+            ClockView ?= require "./views/ClockView"
+            StatusView ?= require "./views/StatusView"
 
             # Create the status bar views
             @clockView ?= new ClockView()

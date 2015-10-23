@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/queenp/punchclock/issues"
   },
-  "licenses": [
+  "license": [
     {
       "type": "MIT",
       "url": "https://github.com/queenp/punchclock/raw/master/LICENSE.md"
@@ -29,14 +29,22 @@
     "atom": ">0.174.0 <2.0.0"
   },
   "dependencies": {
-    "moment": "*",
+    "moment": ">2.0.0",
     "twix": "*",
     "mkdirp": "*",
     "etch": "^0.1.0",
     "recursive-readdir": "^1.2.1",
-    "event-kit": "*"
+    "event-kit": "*",
+    "babel": "*",
+    "jquery": "*"
   },
-  "devDependencies": {},
+  "devDependencies": {
+               "chai": "^3.2.0",
+   "chai-as-promised": "*",
+              "sinon": "*",
+         "sinon-chai": "*"
+
+  },
   "consumedServices": {
     "status-bar": {
       "versions": {
