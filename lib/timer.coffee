@@ -19,7 +19,7 @@ mkdirp = null
 # punchclock
 ClockView = null
 StatusView = null
-PunchCard = require 'models/PunchCard'
+PunchCard = require './models/PunchCard'
 
 ### EXPORTS ###
 module.exports =
@@ -36,13 +36,13 @@ module.exports =
         ### CONSTRUCTOR ###
         constructor: ( state, timeDataPath ) ->
 
-            @punchCard = new PunchCard();
-
             # Setup the current project
             # Hardcoded index isn't great, but we're using single project path
             # as an identifier?
             repos = atom.project.getRepositories()
             @currentProject = repos.length > 0 ?  repos[0].repo.workingDirectory
+
+            @punchCard = new PunchCard({label:@currentProject})
 
 
             # Setup some paths
