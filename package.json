@@ -43,7 +43,6 @@
    "chai-as-promised": "*",
               "sinon": "*",
          "sinon-chai": "*"
-
   },
   "consumedServices": {
     "status-bar": {
