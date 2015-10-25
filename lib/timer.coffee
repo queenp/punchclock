@@ -39,11 +39,13 @@ module.exports =
             # Setup the current project
             # Hardcoded index isn't great, but we're using single project path
             # as an identifier?
-            repos = atom.project.getRepositories()
-            @currentProject = repos.length > 0 ?  repos[0].repo.workingDirectory
-
-            @punchCard = new PunchCard({label:@currentProject})
-
+            @repos = Promise.all(atom.project.getDirectories()
+                    .map atom.project.repositoryForDirectory.bind(atom.project))
+                .then (repos) =>
+                    repo = repos[0]
+                    branch = repo.getShortHead()
+                    wd = repo.getWorkingDirectory()
+                    @punchCard = new PunchCard({label: wd, branch:branch})
 
             # Setup some paths
             @storagePath = timeDataPath || null
@@ -95,7 +97,7 @@ module.exports =
             if @autoEnable is true
                 # We seem to have auto-enable time tracking turned on, so let us start
                 # Just call the start & let it handle stuff as usual
-                @start()
+                @punchCard.start()
 
         ### START ###
         start: ->
@@ -105,7 +107,7 @@ module.exports =
                 if @startTimestamp is null
                     # Setup the start date time only if we are not in paused state
                     # otherwise start date time will keep changing which is wrong
-                    @startTimestamp = Date.now()
+                    @punchCard.begin()
 
                     # Initialize the time incrementer
                     @incrementer = setInterval ( => @step() ), 1000
