@@ -8,8 +8,8 @@ module.exports = function (wallaby) {
     ],
 
     tests: [
-      'test/*Spec.coffee',
-      'test/**/*Spec.coffee'
+      'spec/*-spec.coffee',
+      'spec/**/*-spec.coffee'
     ],
 
     compilers: {

@@ -1,34 +1,28 @@
-assert      = require 'assert'
-chai        = require 'chai'
 sinon       = require 'sinon'
-sinonChai       = require 'sinon-chai'
-expect      = chai.expect
-chai.use sinonChai
-
 Pause = require '../../lib/models/Pause.js'
 moment = require 'moment'
 
 describe "Pause", ->
 
     beforeEach ->
-        @clock = sinon.useFakeTimers();
         @pause = new Pause();
+        @clock = sinon.useFakeTimers();
+        timerCallback = jasmine.createSpy "timerCallback"
 
     afterEach ->
         @clock.restore()
 
     describe "Object lifecycle", ->
         it "starts by default at current time", ->
-            expect(@pause.start).to.be.undefined
-            expect(@pause.duration.asSeconds()).to.equal(0)
+            expect(@pause.start).toBe.undefined
+            expect(@pause.duration.asSeconds()).toEqual(0)
             @pause.start = Date.now()
-            expect(@pause.start.unix).to.equal(moment().unix)
-            expect(moment.isMoment(@pause.start)).to.be.true;
+            expect(moment.isMoment(@pause.start)).toBe.true;
 
         it "counts its duration", ->
             @pause.start = Date.now()
-            @clock.tick(500)
-            expect(@pause.duration.asSeconds()).to.equal(0.5)
+            @clock.tick(1000)
+            expect(@pause.duration.asSeconds()).toEqual(1)
 
         it "cannot be written to after ended", ->
             @pause.start = Date.now()
@@ -36,7 +30,7 @@ describe "Pause", ->
             @pause.end = Date.now()
             @clock.tick(5000)
             @pause.end = Date.now()
-            expect(@pause.duration.asSeconds()).to.equal(5)
+            expect(@pause.duration.asSeconds()).toEqual(5)
 
         it "can produce an object representation", ->
             @pause.start = Date.now()
@@ -44,11 +38,11 @@ describe "Pause", ->
             @clock.tick(some_random_time)
             @pause.end = Date.now()
             obj = @pause.object
-            expect(obj).to.exist
-            expect(obj.start).to.equal(0)
-            expect(obj.end).to.equal(Math.floor(some_random_time))
+            expect(obj).toBeDefined()
+            expect(obj.start).toEqual(0)
+            expect(obj.end).toEqual(Math.floor(some_random_time))
 
         it "can be initialised with start/end values", ->
             mock = new Pause({start:1000, end:25432});
-            expect(mock.start.unix()).to.equal(1)
-            expect(mock.duration.asMilliseconds()).to.equal(+mock.end - mock.start)  # abusing casting by valueOf
+            expect(mock.start.unix()).toEqual(1)
+            expect(mock.duration.asMilliseconds()).toEqual(+mock.end - mock.start)  # abusing casting by valueOf
