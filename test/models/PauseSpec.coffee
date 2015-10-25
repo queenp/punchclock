@@ -46,7 +46,7 @@ describe "Pause", ->
             obj = @pause.object
             expect(obj).to.exist
             expect(obj.start).to.equal(0)
-            expect(obj.end).to.equal(Math.floor(some_random_time/1000))
+            expect(obj.end).to.equal(Math.floor(some_random_time))
 
         it "can be initialised with start/end values", ->
             mock = new Pause({start:1000, end:25432});

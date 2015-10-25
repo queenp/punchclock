@@ -57,12 +57,19 @@ describe "PunchCard started from defaults", ->
         expect(+mock.end).to.equal(stamp+5000)
         expect(mock.duration.asMilliseconds()).to.equal(5000)
 
-    it "can be initialised with pauses", ->
+    it "can be initialised with pauses from JSON", ->
         mock = mockCardWithPauses()
         # expect(mock.pauses[0].start).to.equal(1234)
         # expect(mock.pauses[0].end).to.equal(2345)
         # expect(mock.pauses[0].duration).to.equal(1111)
         expect(mock.duration.asMilliseconds()).to.equal(10000 - mock.pauses[0].duration - mock.autoPauses[0].duration)
+
+    it "can be exported out to object notation", ->
+        mock = mockCardWithPauses()
+        newObject = mock.object
+        expect(newObject.start).to.equal(0)
+        expect(newObject.end).to.equal(10000)
+        expect(newObject.pauses[0].start).to.equal(1234)
 
     it "says when it isPaused", ->
         expect(@card.isPaused).to.be.false
