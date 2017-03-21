@@ -1,6 +1,8 @@
 Punchclock
 ==========
 
+**NOTE**: I'm not able to commit any time to patching bugs at this point or keeping this plugin up to date, and haven't been for a year now. I'm more than happy to merge pull requests, but that's about all I can do for this plugin presently.
+
 Punchclock allows you to track time spent on projects, and provides (or rather will provide) ways to view the data in different ways as well as the ability to export and integrate this data with external endpoints.
 
 ##### Default Status Bar View
